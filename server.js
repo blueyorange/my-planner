@@ -16,8 +16,6 @@ const MongoStore = require('connect-mongo')
 // routes
 const index = require("./routes/index.js");
 const auth = require("./routes/auth.js");
-const register = require("./routes/register.js");
-const users = require("./routes/users.js");
 
 const app = express();
 
@@ -58,8 +56,6 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // routes
 app.use("/", index);
 app.use("/auth", auth);
-app.use("/register", register);
-app.use("/users", users);
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
