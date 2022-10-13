@@ -1,0 +1,16 @@
+{% set page="courses" %}
+{% extends "base.njk" %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <nav class="nav nav-pills flex-column">
+                    {% for course in courses %}
+                        <a class="nav-link {% if selectedCourse.title == course.title %}active{% endif %}" href="/courses/{{ course.title }}">{{ course.title }}</a>
+                    {% endfor %}
+                </nav>
+                <a href="/courses/{{ course.title }}">{{ course.title }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
