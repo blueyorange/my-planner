@@ -3,6 +3,7 @@ const router = express.Router();
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oidc')
 const User = require("../models/user.model.js");
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 passport.use(new GoogleStrategy({
   clientID: process.env['GOOGLE_CLIENT_ID'],
@@ -32,7 +33,7 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
 
 router.get("/login", (req, res) => {
   return res.render("login.njk", 
-  {error : req.flash('error')[0], GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID, title: "MyPlanner"}
+  {error : req.flash('error')[0], GOOGLE_CLIENT_ID, title: "MyPlanner"}
 );
 });
 
