@@ -14,7 +14,8 @@
             <div class="col">
                 <ul class="list-group">
                     {% for outcome in selectedCourse.outcomes %}
-                        <li class="list-group-item">{{ outcome.description }}</li>
+                        <li class="list-group-item">{{ outcome.ref }}
+                            {{ outcome.description }}</li>
                     {% endfor %}
                 </ul>
             </div>

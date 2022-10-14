@@ -6,21 +6,13 @@ router.get("/", async (req, res) => {
   const modules = await Outcome.find({}).distinct('topic');
   console.log(modules)
   const courses = await Course.find({});
-  if (req.user) {
-    return res.render("courses.njk", { currentUser: req.user, courses });
-  } else {
-    return res.redirect("/auth/login");
-  }
+  return res.render("courses.njk", { currentUser: req.user, courses });
 });
 
-router.get("/:title", async (req, res) => {
+router.get("/:course", async (req, res) => {
   const courses = await Course.find({});
-  const selectedCourse = await Course.findOne({title: req.params.title}).populate('outcomes').exec();
-  if (req.user) {
+  const selectedCourse = await Course.findOne({title: req.params.course}).populate('outcomes').exec();
     return res.render("courses.njk", { currentUser: req.user, courses, selectedCourse });
-  } else {
-    return res.redirect("/auth/login");
-  }
 });
 
 module.exports = router;
