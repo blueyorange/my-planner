@@ -57,9 +57,17 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // routes
 app.use("/", index);
 app.use("/auth", auth);
+app.use(function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/auth/login');
+  }
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
+  next();
+})
 app.use("/courses", courses)
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT)
