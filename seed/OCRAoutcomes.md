@@ -1,4 +1,6 @@
-# Module 1: Practical skills
+# 1 Practical skills
+
+## 1.1 Practical skills assessed in the written examination
 
 ### 1.1.1 Planning
 
@@ -90,7 +92,7 @@ distances, using digital or vernier scales
 
 (l) use of ionising radiation, including detectors.
 
-# Module 2: Foundations of physics
+# 2 Foundations of physics
 
 ## 2.1 Physical quantities and units
 
@@ -127,7 +129,7 @@ distances, using digital or vernier scales
 (c) vector triangle to determine the resultant of any two coplanar vectors
 (d) resolving a vector into two perpendicular components; $F_x = F \cos \theta$; $F_y = F \sin \theta$.
 
-# Module 3: Forces and motion
+# 3 Forces and motion
 
 ## 3.1 Motion
 
@@ -277,7 +279,7 @@ a) density; $\rho = \frac{m}{V}$
 
 (c) perfectly elastic collision and inelastic collision.
 
-# Module 4: Electons, waves and photons
+# 4 Electons, waves and photons
 
 ## 4.1 Charge and current
 
@@ -351,7 +353,7 @@ a) density; $\rho = \frac{m}{V}$
 
 (c) the kilowatt-hour (kW h) as a unit of energy; calculating the cost of energy.
 
-## 4.2 Electrical circuits
+## 4.3 Electrical circuits
 
 ### 4.3.1 Series and parallel circuits
 
@@ -481,7 +483,7 @@ a) density; $\rho = \frac{m}{V}$
 
 (c) the de Broglie equation $\frac{h}{p}$
 
-# Module 5: Newtonian world and astrophysics
+# 5 Newtonian world and astrophysics
 
 ## 5.1 Thermal physics
 
@@ -718,7 +720,7 @@ the gravitational force between it and the Sun
 
 (o) current ideas; universe is made up of dark energy, dark matter, and a small percentage of ordinary matter.
 
-# Module 6: Particles and medical physics
+# 6 Particles and medical physics
 
 ## 6.1 Capacitors
 
@@ -735,8 +737,6 @@ the gravitational force between it and the Sun
 (e) analysis of circuits containing capacitors and resistors; techniques and procedures used to investigate capacitors in both series and parallel combinations using ammeters and voltmeters.
 
 ### 6.1.2 Energy
-
-## 6.1.2 Energy
 
 (a) p.d. – charge graph for a capacitor; energy stored is area under graph
 
