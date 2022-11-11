@@ -14,9 +14,8 @@ var session = require('express-session');
 const MongoStore = require('connect-mongo')
 
 // routes
-const index = require("./routes/index.js");
+const home = require("./routes/home.js");
 const auth = require("./routes/auth.js");
-const courses = require("./routes/courses.js");
 
 const app = express();
 
@@ -55,7 +54,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // routes
-app.use("/", index);
+app.use("/", home);
 app.use("/auth", auth);
 app.use(function(req, res, next) {
   if (!req.isAuthenticated()) {
@@ -65,7 +64,6 @@ app.use(function(req, res, next) {
   res.locals.success = req.flash("success");
   next();
 })
-app.use("/courses", courses)
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
