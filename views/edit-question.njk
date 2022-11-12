@@ -1,0 +1,63 @@
+{% set page="questions" %}
+{% extends "base.njk" %}
+{% block content %}
+    {% include "header.njk" %}
+    <div class="container">
+        <h2>Add new</h2>
+        <form action="/questions/create">
+            <div class="mb-3">
+                <label for="questionTextarea" class="form-label">Question</label>
+                <textarea class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">A</span>
+                <input type="text" class="form-control" aria-label="Text input with checkbox"/>
+                <div class="input-group-text">
+                    <input
+                        class="form-check-input mt-0"
+                        type="radio"
+                        value="A"
+                        name="correct"
+                        aria-label="Checkbox for following text input"/>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">B</span>
+                <input type="text" class="form-control" aria-label="Text input with checkbox"/>
+                <div class="input-group-text">
+                    <input
+                        class="form-check-input mt-0"
+                        type="radio"
+                        value="B"
+                        name="correct"
+                        aria-label="Checkbox for following text input"/>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">C</span>
+                <input type="text" class="form-control" aria-label="Text input with checkbox"/>
+                <div class="input-group-text">
+                    <input
+                        class="form-check-input mt-0"
+                        type="radio"
+                        value="C"
+                        name="correct"
+                        aria-label="Checkbox for following text input"/>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">D</span>
+                <input type="text" class="form-control" aria-label="Text input with checkbox"/>
+                <div class="input-group-text">
+                    <input
+                        class="form-check-input mt-0"
+                        type="radio"
+                        value="D"
+                        name="correct"
+                        aria-label="Checkbox for following text input"/>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
