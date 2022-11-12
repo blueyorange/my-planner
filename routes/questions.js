@@ -12,7 +12,13 @@ router.get("/create", (req, res) => {
 
 router.post("/create", (req, res) => {
     const form = req.body;
-    console.log(form)
+    options = new Map();
+    ['A', 'B', 'C', 'D'].forEach(letter => {
+        options[letter] = form[`option-${letter}`]
+    })
+    console.log(options)
+    const correct = form.correct
+    const q = Question.create({ question: form.question, options, correct }).then(q => console.log(q));
     return res.render("edit-question.njk")
 })
 
