@@ -31,12 +31,6 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
   failureRedirect: '/'
 }));
 
-router.get("/login", (req, res) => {
-  return res.render("login.njk", 
-  {error : req.flash('error')[0], GOOGLE_CLIENT_ID, title: "MyPlanner"}
-);
-});
-
 router.get('/logout', function(req, res, next) {
   req.logout(function(err) {
     if (err) { return next(err); }
