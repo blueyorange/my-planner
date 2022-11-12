@@ -27,8 +27,8 @@ passport.deserializeUser((user, done) => done(null, user));
 router.get('/login/federated/google', passport.authenticate('google'));
 
 router.get('/oauth2/redirect/google', passport.authenticate('google', {
-  successRedirect: '/',
-  failureRedirect: '/login'
+  successRedirect: '/questions',
+  failureRedirect: '/'
 }));
 
 router.get("/login", (req, res) => {
