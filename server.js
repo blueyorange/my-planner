@@ -16,6 +16,7 @@ const MongoStore = require('connect-mongo')
 // routes
 const home = require("./routes/home.js");
 const auth = require("./routes/auth.js");
+const questions = require("./routes/questions.js");
 
 const app = express();
 
@@ -56,14 +57,16 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // routes
 app.use("/", home);
 app.use("/auth", auth);
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect('/auth/login');
   }
+  res.locals.user = req.user
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();
 })
+app.use("/questions", questions)
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
