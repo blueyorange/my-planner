@@ -8,7 +8,7 @@
                 <form action="/questions/create" method="post">
                     <div class="mb-3">
                         <label for="questionTextarea" class="form-label">Question</label>
-                        <textarea name="question" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
+                        <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="option-A">A</span>
@@ -81,21 +81,18 @@
             const form = document.querySelector('form');
             const formData = new FormData(form)
             const optionNodeList = document.querySelectorAll("input[name^='option']")
-            const questionNode = document.querySelector("textarea[name='question']");
+            const questionNode = document.querySelector("textarea[name='body']");
             const renderedNode = document.querySelector('#rendered');
             function
             onInput (e) {
                 const key = e.target.name;
                 const value = e.target.value;
                 formData[key] = value;
-                renderedNode.innerHTML = `
-                ${
-                    marked.parse(formData['question'])
-                }\n
-                ${
-                    formData.filter(key =>)
-                }
-                `
+                renderedNode.innerHTML = marked.parse(formData['body']);
+                renderedNode
+                    .querySelector('table')
+                    .classList
+                    .add('table');
                 renderMathInElement(renderedNode, {
                     delimiters: [
                         {
