@@ -16,10 +16,15 @@ router.post("/create", (req, res) => {
     ['A', 'B', 'C', 'D'].forEach(letter => {
         options[letter] = form[`option-${letter}`]
     })
-    console.log(options)
-    const correct = form.correct
-    const q = Question.create({ question: form.question, options, correct }).then(q => console.log(q));
-    return res.render("edit-question.njk")
+    const correct = form.correct;
+    return Question.create({ question: form.question, options, correct }).then(q => res.render("view-question.njk", { q }));
+})
+
+router.get("/:id", (req, res) => {
+    const { id } = req.params;
+    const q = Question.findById(id);
+    console.log(q)
+    return res.render("view-question.njk", {q});
 })
 
 module.exports = router;

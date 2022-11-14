@@ -1,0 +1,8 @@
+{% set page="questions" %}
+{% extends "base.njk" %}
+{% block content %}
+    {% include "header.njk" %}
+    <div class="container">
+        <p>{{ q.question }}</p>
+    </div>
+{% endblock %}

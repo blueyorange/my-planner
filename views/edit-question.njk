@@ -3,61 +3,117 @@
 {% block content %}
     {% include "header.njk" %}
     <div class="container">
-        <h2>Add new</h2>
-        <form action="/questions/create" method="post">
-            <div class="mb-3">
-                <label for="questionTextarea" class="form-label">Question</label>
-                <textarea name="question" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
+        <div class="row">
+            <div class="col">
+                <form action="/questions/create" method="post">
+                    <div class="mb-3">
+                        <label for="questionTextarea" class="form-label">Question</label>
+                        <textarea name="question" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="option-A">A</span>
+                        <input name="option-A" type="text" class="form-control" aria-label="Text input with checkbox"/>
+                        <div class="input-group-text">
+                            <input
+                                class="form-check-input mt-0"
+                                type="radio"
+                                value="A"
+                                name="correct"
+                                aria-label="Checkbox for following text input"/>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="option-B">B</span>
+                        <input name="option-B" type="text" class="form-control" aria-label="Text input with checkbox"/>
+                        <div class="input-group-text">
+                            <input
+                                class="form-check-input mt-0"
+                                type="radio"
+                                value="B"
+                                name="correct"
+                                aria-label="Checkbox for following text input"/>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="option-C">C</span>
+                        <input name="option-C" type="text" class="form-control" aria-label="Text input with checkbox"/>
+                        <div class="input-group-text">
+                            <input
+                                class="form-check-input mt-0"
+                                type="radio"
+                                value="C"
+                                name="correct"
+                                aria-label="Checkbox for following text input"/>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="option-D">D</span>
+                        <input name="option-D" type="text" class="form-control" aria-label="Text input with checkbox"/>
+                        <div class="input-group-text">
+                            <input
+                                class="form-check-input mt-0"
+                                type="radio"
+                                value="D"
+                                name="correct"
+                                aria-label="Checkbox for following text input"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">A</span>
-                <input name="option-A" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                <div class="input-group-text">
-                    <input
-                        class="form-check-input mt-0"
-                        type="radio"
-                        value="A"
-                        name="correct"
-                        aria-label="Checkbox for following text input"/>
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">B</span>
-                <input name="option-B" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                <div class="input-group-text">
-                    <input
-                        class="form-check-input mt-0"
-                        type="radio"
-                        value="B"
-                        name="correct"
-                        aria-label="Checkbox for following text input"/>
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">C</span>
-                <input name="option-C" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                <div class="input-group-text">
-                    <input
-                        class="form-check-input mt-0"
-                        type="radio"
-                        value="C"
-                        name="correct"
-                        aria-label="Checkbox for following text input"/>
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">D</span>
-                <input name="option-D" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                <div class="input-group-text">
-                    <input
-                        class="form-check-input mt-0"
-                        type="radio"
-                        value="D"
-                        name="correct"
-                        aria-label="Checkbox for following text input"/>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+            <div class="col" id="rendered"></div>
+        </div>
     </div>
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+        integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+        crossorigin="anonymous"></script>
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+        crossorigin="anonymous"
+        onload=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        (function () {
+            const form = document.querySelector('form');
+            const formData = new FormData(form)
+            const optionNodeList = document.querySelectorAll("input[name^='option']")
+            const questionNode = document.querySelector("textarea[name='question']");
+            const renderedNode = document.querySelector('#rendered');
+            function
+            onInput (e) {
+                const key = e.target.name;
+                const value = e.target.value;
+                formData[key] = value;
+                renderedNode.innerHTML = `
+                ${
+                    marked.parse(formData['question'])
+                }\n
+                ${
+                    formData.filter(key =>)
+                }
+                `
+                renderMathInElement(renderedNode, {
+                    delimiters: [
+                        {
+                            left: '$$',
+                            right: '$$',
+                            display: true
+                        }, {
+                            left: '$',
+                            right: '$',
+                            display: false
+                        }
+                    ]
+                });
+            }
+            questionNode.addEventListener('input', onInput);
+            optionNodeList.forEach(node => {
+                node.addEventListener('input', onInput);
+            });
+        })();
+    </script>
 {% endblock %}
