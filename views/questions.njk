@@ -3,25 +3,50 @@
 {% block content %}
     {% include "header.njk" %}
     <div class="container">
-        <div class="row">
-            <p>
-                <a href="/questions/create" class="btn btn-primary" role="button">New question</a>
-            </p>
-        </div>
-        <nav aria-label="pages nav">
-            <ul class="pagination">
-                <li class="page-item {% if page==1 %}disabled{% endif %}">
-                    <a class="page-link" href="/questions/?page={{ page-1 }}">Previous</a>
-                </li>
-                {% for p in pages %}
-                    <li class="page-item">
-                        <a class="page-link {% if page==p %}active{% endif %}" href="/questions/?page={{ p }}">{{ p }}</a>
+        <div class="column">
+            <div class="row">
+                <p>
+                    <a href="/questions/create" class="btn btn-primary" role="button">New question</a>
+                </p>
+            </div>
+            <nav aria-label="pages nav">
+                <p class="mb-3">
+                    {{ total }} results found.
+                </p>
+                <ul class="pagination">
+                    <li class="page-item {% if page==1 %}disabled{% endif %}">
+                        <a class="page-link" href="/questions/?page={{ page-1 }}">Previous</a>
                     </li>
+                    {% for p in range(startPaginate, endPaginate+1) %}
+                        <li class="page-item">
+                            <a class="page-link {% if page==p %}active{% endif %}" href="/questions/?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if endPaginate>= total %} disabled {% endif %}">
+                        <a class="page-link" href="/questions/?page={{ page|int+1 }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="row">
+                {% for q in questions %}
+                    <div style="width: 600px; height: 400px; border: 1px solid lightgrey; margin: 0 0 5px 5px; overflow: hidden;">
+                        <div style="height: 300px; overflow: hidden; border-bottom: 1px lightgrey solid; margin-bottom: 5px;">
+                            {{ q.body | safe }}
+                        </div>
+                        <div style="mt-3">
+                            {% for tag in q.tags %}
+                                <a href="#" class="btn btn-info" role="button">{{ tag }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endfor %}
-                <li class="page-item {% if not next %} disabled {% endif %}">
-                    <a class="page-link" href="/questions/?page={{ page|int+1 }}">Next</a>
-                </li>
-            </ul>
-        </nav>
+            </div>
+        </div>
     </div>
+    <style>
+        img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 {% endblock %}

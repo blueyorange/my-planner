@@ -1,10 +1,10 @@
-{% macro card(title, description) %}
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">{{ title }}</div>
+{% macro card(img, title, link, body) %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{ img }}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{ title }}</h5>
+                <p class="card-text">{{ body }}</p>
+                <a href="{{ link }}" class="btn btn-primary">View</a>
+            </div>
         </div>
-        <div class="card-body">
-            <p class="card-text">{{ description }}</p>
-        </div>
-    </div>
-{% endmacro %}
+    {% endmacro %}

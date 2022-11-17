@@ -2,16 +2,17 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const nunjucks = require("nunjucks");
 const mongoose = require("mongoose");
-const flash = require('connect-flash')
+const flash = require("connect-flash");
+require("https").globalAgent.options.rejectUnauthorized = false;
 require("dotenv").config();
 const {
   handleInvalidUrlErrors,
   handleCustomErrors,
   handleServerErrors,
 } = require("./errors/errors");
-var passport = require('passport');
-var session = require('express-session');
-const MongoStore = require('connect-mongo')
+var passport = require("passport");
+var session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 // routes
 const home = require("./routes/home.js");
@@ -25,15 +26,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
-app.use(session({
-  secret: process.env.SECRET,
-  store: MongoStore.create({mongoUrl: process.env.MONGO_URI}),
-  saveUninitialized: false,
-  resave: false,
-  // cookie: {secure: true} // for use with HTTPS
-}));
-app.use(passport.authenticate('session'));
-app.use(flash())
+app.use(
+  session({
+    secret: process.env.SECRET,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    saveUninitialized: false,
+    resave: false,
+    // cookie: {secure: true} // for use with HTTPS
+  })
+);
+app.use(passport.authenticate("session"));
+app.use(flash());
 
 // SS rendering
 nunjucks.configure("views", {
@@ -59,16 +62,18 @@ app.use("/", home);
 app.use("/auth", auth);
 app.use(function (req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.redirect('/auth/login');
+    return res.redirect("/auth/login");
   }
-  res.locals.user = req.user
+  res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();
-})
-app.use("/questions", questions)
+});
+app.use("/questions", questions);
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
 
-app.listen(process.env.PORT)
+const { PORT = 3000 } = process.env;
+console.log(`Listening on port ${PORT}...`);
+app.listen(PORT);

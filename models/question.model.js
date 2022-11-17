@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const QuestionSchema = new mongoose.Schema({
   body: { type: String },
@@ -9,5 +10,7 @@ const QuestionSchema = new mongoose.Schema({
   images: [{ type: String }],
   type: { type: String },
 });
+
+QuestionSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Question", QuestionSchema);
