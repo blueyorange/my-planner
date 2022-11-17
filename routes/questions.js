@@ -2,8 +2,38 @@ const express = require("express");
 const router = express.Router();
 const Question = require("../models/question.model.js");
 
-router.get("/", (req, res) => {
-    return res.render("questions.njk");
+function getConsecutiveIntegers(start, end) {
+    var out = [];
+    for (var i = start; i <= end; i++) {
+        out.push(i);
+    }
+    return out;
+}
+
+function getPageNumbers(page, totalPages) {
+    const maxPages = 10;
+    const offset = 5;
+    console.log(typeof(page))
+    const start = page > offset ? (1 + page) - offset : 1
+    console.log(start)
+    let end = start + maxPages - 1;
+    end = end > totalPages ? totalPages : end
+    return getConsecutiveIntegers(start, end)
+}
+
+router.get("/", async (req, res) => {
+    let { page = 1, limit = 10 } = req.query;
+    page = Number(page);
+    limit = Number(limit);
+    // const numResults = (await Question.find()).length;
+    let numResults = 0;
+    const totalPages = Math.ceil(numResults / limit);
+    const pages = getPageNumbers(page, totalPages);
+    const next = totalPages === pages.at(-1) ? false : true;
+    console.log(pages)
+    console.log(page)
+    const questions =  await Question.find().limit(limit).skip(page*limit).exec();
+    return res.render("questions.njk", {questions, pages, page, next, numResults});
 });
 
 router.get("/create", (req, res) => {

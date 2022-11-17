@@ -1,4 +1,4 @@
-{% set page="questions" %}
+{% set title="questions" %}
 {% extends "base.njk" %}
 {% block content %}
     {% include "header.njk" %}
@@ -8,5 +8,20 @@
                 <a href="/questions/create" class="btn btn-primary" role="button">New question</a>
             </p>
         </div>
+        <nav aria-label="pages nav">
+            <ul class="pagination">
+                <li class="page-item {% if page==1 %}disabled{% endif %}">
+                    <a class="page-link" href="/questions/?page={{ page-1 }}">Previous</a>
+                </li>
+                {% for p in pages %}
+                    <li class="page-item">
+                        <a class="page-link {% if page==p %}active{% endif %}" href="/questions/?page={{ p }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if not next %} disabled {% endif %}">
+                    <a class="page-link" href="/questions/?page={{ page|int+1 }}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 {% endblock %}
