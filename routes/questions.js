@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
     };
     return question;
   });
-  console.log(questions[1]);
   return res.render("questions.njk", {
     questions,
     total,
