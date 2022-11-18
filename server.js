@@ -49,7 +49,7 @@ nunjucks.configure("views", {
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  ignoreUndefined: true
+  ignoreUndefined: true,
 });
 
 //Get the default connection
@@ -63,7 +63,7 @@ app.use("/", home);
 app.use("/auth", auth);
 app.use(function (req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.redirect("/auth/login");
+    return res.redirect("/");
   }
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
