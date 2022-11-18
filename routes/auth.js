@@ -27,9 +27,17 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, done) => done(null, user));
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
 
-passport.deserializeUser((user, done) => done(null, user));
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
 
 router.get("/login/federated/google", passport.authenticate("google"));
 
