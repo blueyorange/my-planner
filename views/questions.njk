@@ -9,6 +9,16 @@
                     <a href="/questions/create" class="btn btn-primary" role="button">New question</a>
                 </p>
             </div>
+            <div class="row">
+                <div>
+                    {% for tag in allTags %}
+                        <a
+                            href="/questions/?{{ queryString }}{% if queryString %}&{% endif %}tags={{ tag | urlencode }}"
+                            class="badge bg-{% if tag in tags %}success{% else %}secondary{% endif %}"
+                            role="button">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
             <nav aria-label="pages nav">
                 <p class="mb-3">
                     {{ total }} results found.
@@ -66,6 +76,9 @@
         }
         .question-tags a {
             margin: 0 0 5px 5px;
+        }
+        a {
+            text-decoration: none;
         }
     </style>
 {% endblock %}

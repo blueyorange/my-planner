@@ -6,13 +6,14 @@ const { marked } = require("marked");
 router.get("/", async (req, res) => {
   const numPagOptions = 5;
   let { page = 1, limit = 18, tags } = req.query;
-  console.log("query tags: ", tags);
   let query = {};
   let queryString = "";
   if (tags) {
     query = { tags: { $all: tags } };
     const queryParams = new URLSearchParams({ tags });
-    queryString = queryParams.toString().replace("%2C", "&tags=");
+    queryString = queryParams.toString().replaceAll("%2C", "&tags=");
+  } else {
+    tags = "";
   }
   const { docs, total, pages } = await Question.paginate(query, {
     page,
@@ -38,6 +39,7 @@ router.get("/", async (req, res) => {
     startPaginate,
     endPaginate,
     allTags,
+    tags,
     queryString,
   });
 });
