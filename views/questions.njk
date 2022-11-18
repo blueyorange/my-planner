@@ -37,7 +37,7 @@
                     </li>
                 </ul>
             </nav>
-            <div class="row">
+            <div class="row d-flex justify-content-around">
                 {% for q in questions %}
                     <div class="question-card" style="">
                         <div class="question-body">
@@ -56,29 +56,4 @@
             </div>
         </div>
     </div>
-    <style>
-        .question-card {
-            width: 100%;
-            max-width: 450px;
-            height: auto;
-            border: 1px solid lightgrey;
-            overflow: hidden;
-            margin-left
-        }
-        .question-body {
-            height: auto;
-            border-bottom: 1px lightgrey solid;
-            margin-bottom: 5px;
-        }
-        .question-body img {
-            width: 100%;
-            height: auto;
-        }
-        .question-tags a {
-            margin: 0 0 5px 5px;
-        }
-        a {
-            text-decoration: none;
-        }
-    </style>
 {% endblock %}

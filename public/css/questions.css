@@ -1,0 +1,22 @@
+.question-card {
+    max-width: 380px;
+    height: auto;
+    border: 1px solid lightgrey;
+    overflow: hidden;
+    margin: 0 0 5px 5px;
+}
+.question-body {
+    height: auto;
+    border-bottom: 1px lightgrey solid;
+    margin-bottom: 5px;
+}
+.question-body img {
+    max-width: 100%;
+    height: auto;
+}
+.question-tags a {
+    margin: 0 0 5px 5px;
+}
+a {
+    text-decoration: none;
+}
