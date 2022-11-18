@@ -3,7 +3,7 @@
 {% block content %}
     {% include "header.njk" %}
     <div class="container">
-        <div class="column">
+        <div class="col">
             <div class="row">
                 <p>
                     <a href="/questions/create" class="btn btn-primary" role="button">New question</a>
@@ -29,13 +29,16 @@
             </nav>
             <div class="row">
                 {% for q in questions %}
-                    <div style="width: 600px; height: 400px; border: 1px solid lightgrey; margin: 0 0 5px 5px; overflow: hidden;">
-                        <div style="height: 300px; overflow: hidden; border-bottom: 1px lightgrey solid; margin-bottom: 5px;">
+                    <div class="question-card" style="">
+                        <div class="question-body">
                             {{ q.body | safe }}
                         </div>
-                        <div style="mt-3">
+                        <div class="question-tags">
                             {% for tag in q.tags %}
-                                <a href="/questions/?{{ queryString }}&tags={{ tag | urlencode }}" class="btn btn-info" role="button">{{ tag }}</a>
+                                <a
+                                    href="/questions/?{{ queryString }}{% if queryString %}&{% endif %}tags={{ tag | urlencode }}"
+                                    class="btn btn-info"
+                                    role="button">{{ tag }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -44,9 +47,25 @@
         </div>
     </div>
     <style>
-        img {
+        .question-card {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border: 1px solid lightgrey;
+            overflow: hidden;
+            margin-left
+        }
+        .question-body {
+            height: auto;
+            border-bottom: 1px lightgrey solid;
+            margin-bottom: 5px;
+        }
+        .question-body img {
             width: 100%;
             height: auto;
+        }
+        .question-tags a {
+            margin: 0 0 5px 5px;
         }
     </style>
 {% endblock %}
