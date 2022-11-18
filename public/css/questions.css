@@ -1,9 +1,10 @@
 .question-card {
     max-width: 380px;
     height: auto;
-    border: 1px solid lightgrey;
+    border-radius: 3px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     overflow: hidden;
-    margin: 0 0 5px 5px;
+    margin: 0 0px 20px 0;
 }
 .question-body {
     height: auto;
