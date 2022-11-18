@@ -10,11 +10,11 @@
                 </p>
             </div>
             <div class="row">
-                <div>
+                <div class="mb-3">
                     {% for tag in allTags %}
                         <a
                             href="/questions/?{{ queryString }}{% if queryString %}&{% endif %}tags={{ tag | urlencode }}"
-                            class="badge bg-{% if tag in tags %}success{% else %}secondary{% endif %}"
+                            class="badge bg-{% if tag in tags %}primary{% else %}secondary{% endif %}"
                             role="button">{{ tag }}</a>
                     {% endfor %}
                 </div>
@@ -47,7 +47,7 @@
                             {% for tag in q.tags %}
                                 <a
                                     href="/questions/?{{ queryString }}{% if queryString %}&{% endif %}tags={{ tag | urlencode }}"
-                                    class="btn btn-info"
+                                    class="badge bg-primary"
                                     role="button">{{ tag }}</a>
                             {% endfor %}
                         </div>
