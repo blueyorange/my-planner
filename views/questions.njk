@@ -15,15 +15,15 @@
                 </p>
                 <ul class="pagination">
                     <li class="page-item {% if page==1 %}disabled{% endif %}">
-                        <a class="page-link" href="/questions/?page={{ page-1 }}">Previous</a>
+                        <a class="page-link" href="/questions/?{{ queryString }}&page={{ page-1 }}">Previous</a>
                     </li>
                     {% for p in range(startPaginate, endPaginate+1) %}
                         <li class="page-item">
-                            <a class="page-link {% if page==p %}active{% endif %}" href="/questions/?page={{ p }}">{{ p }}</a>
+                            <a class="page-link {% if page==p %}active{% endif %}" href="/questions/?{{ queryString }}&page={{ p }}">{{ p }}</a>
                         </li>
                     {% endfor %}
                     <li class="page-item {% if endPaginate>= total %} disabled {% endif %}">
-                        <a class="page-link" href="/questions/?page={{ page|int+1 }}">Next</a>
+                        <a class="page-link" href="/questions/?{{ queryString }}&page={{ page|int+1 }}">Next</a>
                     </li>
                 </ul>
             </nav>
@@ -35,7 +35,7 @@
                         </div>
                         <div style="mt-3">
                             {% for tag in q.tags %}
-                                <a href="#" class="btn btn-info" role="button">{{ tag }}</a>
+                                <a href="/questions/?{{ queryString }}&tags={{ tag | urlencode }}" class="btn btn-info" role="button">{{ tag }}</a>
                             {% endfor %}
                         </div>
                     </div>

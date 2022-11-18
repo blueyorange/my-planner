@@ -4,18 +4,23 @@ const Question = require("../models/question.model.js");
 const { marked } = require("marked");
 
 router.get("/", async (req, res) => {
-  let { page = 1, limit = 10 } = req.query;
-  const { docs, total, pages } = await Question.paginate({}, { page, limit });
+  let { page = 1, limit = 10, tags } = req.query;
+  console.log(tags)
+  const query = { tags };
+  const queryString = (new URLSearchParams(tags)).toString();
+  console.log(queryString)
+  const { docs, total, pages } = await Question.paginate({tags}, { page, limit });
   const startPaginate = page > 4 ? page - 4 : 1;
   let endPaginate = startPaginate + 9;
   endPaginate = endPaginate > pages ? pages : endPaginate;
   questions = docs.map((doc) => {
     const question = {
       ...doc._doc,
-      body: marked.parse(doc.body),
+      body: marked.parse(doc.body)
     };
     return question;
   });
+  const allTags = await Question.find({}).distinct('tags')
   return res.render("questions.njk", {
     questions,
     total,
@@ -23,6 +28,8 @@ router.get("/", async (req, res) => {
     page,
     startPaginate,
     endPaginate,
+    allTags, 
+    queryString
   });
 });
 
