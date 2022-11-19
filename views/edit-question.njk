@@ -8,56 +8,21 @@
                 <form action="/questions/create" method="post">
                     <div class="mb-3">
                         <label for="questionTextarea" class="form-label">Question</label>
-                        <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown"></textarea>
+                        <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown" value="{{ q.body }}"></textarea>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="option-A">A</span>
-                        <input name="option-A" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                        <div class="input-group-text">
+                    {% for option in q.options %}
+                        <div class="input-group mb-3">
                             <input
-                                class="form-check-input mt-0"
-                                type="radio"
-                                value="A"
-                                name="correct"
-                                aria-label="Checkbox for following text input"/>
+                                name="option-{{ loop.index }}"
+                                type="text"
+                                class="form-control"
+                                aria-label="Text input with checkbox"
+                                value="option"/>
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="option-B">B</span>
-                        <input name="option-B" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                        <div class="input-group-text">
-                            <input
-                                class="form-check-input mt-0"
-                                type="radio"
-                                value="B"
-                                name="correct"
-                                aria-label="Checkbox for following text input"/>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="option-C">C</span>
-                        <input name="option-C" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                        <div class="input-group-text">
-                            <input
-                                class="form-check-input mt-0"
-                                type="radio"
-                                value="C"
-                                name="correct"
-                                aria-label="Checkbox for following text input"/>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="option-D">D</span>
-                        <input name="option-D" type="text" class="form-control" aria-label="Text input with checkbox"/>
-                        <div class="input-group-text">
-                            <input
-                                class="form-check-input mt-0"
-                                type="radio"
-                                value="D"
-                                name="correct"
-                                aria-label="Checkbox for following text input"/>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

@@ -4,7 +4,6 @@ const Question = require("../models/question.model.js");
 const { marked } = require("marked");
 
 router.get("/", async (req, res) => {
-  const numPagOptions = 5;
   let { page = 1, limit = 18, tags } = req.query;
   let query = {};
   let queryString = "";
@@ -19,7 +18,8 @@ router.get("/", async (req, res) => {
     page,
     limit,
   });
-  const minAdvance = Math.ceil(numPagOptions / 2 + 1);
+  const numPagOptions = 5;
+  const minAdvance = 3;
   const startPaginate = page > minAdvance ? page - minAdvance : 1;
   let endPaginate = startPaginate + numPagOptions - 1;
   endPaginate = endPaginate > pages ? pages : endPaginate;
@@ -60,12 +60,19 @@ router.post("/create", (req, res) => {
   );
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/view/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id);
-  let q = await Question.findById(id).exec();
-  q = {...q, body: marked.parse(q.body)}
-  return res.render("view-question.njk", { q });
+  return Question.findById(id).then(q => {
+    q = {...q, body: marked.parse(q.body)}
+    return res.render("view-question.njk", { q });
+  });
+});
+
+router.get("/edit/:id", async (req, res) => {
+  const { id } = req.params;
+  return Question.findById(id).then(q => {
+    return res.render("edit-question.njk", {q});
+  })
 });
 
 module.exports = router;
