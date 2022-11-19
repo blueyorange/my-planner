@@ -3,6 +3,22 @@
 {% block content %}
     {% include "header.njk" %}
     <div class="container">
-        <p>{{ q.question }}</p>
+        <div class="row">
+            <div class="question">
+                <p>{{ q.body | safe }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-primary" role="button">Edit</a>
+                <a class="btn btn-primary" role="button">Live poll</a>
+            </div>
+        </div>
     </div>
+    <style>
+        .question img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 {% endblock %}

@@ -60,10 +60,11 @@ router.post("/create", (req, res) => {
   );
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const q = Question.findById(id);
-  console.log(q);
+  console.log(id);
+  let q = await Question.findById(id).exec();
+  q = {...q, body: marked.parse(q.body)}
   return res.render("view-question.njk", { q });
 });
 

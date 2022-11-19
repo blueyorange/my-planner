@@ -6,6 +6,10 @@
     overflow: hidden;
     margin: 0 0px 20px 0;
 }
+.question-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+}
 .question-body {
     height: auto;
     border-bottom: 1px lightgrey solid;
