@@ -9,6 +9,7 @@ exports.handleCustomErrors = (err, req, res, next) => {
     next(err);
   }
 };
+
 exports.handleServerErrors = (err, req, res, next) => {
   console.log(err);
   const error = { code: "Server error", message: err };
