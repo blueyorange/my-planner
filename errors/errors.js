@@ -1,10 +1,14 @@
-exports.handleInvalidUrlErrors = (req, res) => {
-  res.status(404).render("404.njk");
+exports.handleInvalidUrlErrors = (err, req, res, next) => {
+  if (err.code === 404) {
+    res.status(404).render("404.njk");
+  } else {
+    next(err);
+  }
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  if (err._message && err._message.includes("validation")) {
-    res.status(400).render(register);
+  if (err.name === "CastError") {
+    return res.status(404).render("404.njk");
   } else {
     next(err);
   }
@@ -12,6 +16,6 @@ exports.handleCustomErrors = (err, req, res, next) => {
 
 exports.handleServerErrors = (err, req, res, next) => {
   console.log(err);
-  const error = { code: "Server error", message: err };
+  const error = { code: "500 Server error", message: err };
   res.status(500).render("error.njk", { error });
 };

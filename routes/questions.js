@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
   let { page = 1, limit = 18, tags } = req.query;
   page = Number(page);
   if (!page) {
-    return next()
+    return next();
   }
   let query = {};
   let queryString = "";
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   const { docs, total, pages } = await Question.paginate(query, {
     page,
     limit,
-  }).catch(err => next(err,req,res,next));
+  }).catch((err) => next(err, req, res, next));
   const numPagOptions = 5;
   const minAdvance = 3;
   const startPaginate = page > minAdvance ? page - minAdvance : 1;
@@ -64,19 +64,23 @@ router.post("/create", (req, res) => {
   );
 });
 
-router.get("/view/:id", async (req, res) => {
+router.get("/view/:id", async (req, res, next) => {
   const { id } = req.params;
-  return Question.findById(id).then(q => {
-    q = {...q, body: marked.parse(q.body)}
-    return res.render("view-question.njk", { q });
-  });
+  return Question.findById(id)
+    .then((q) => {
+      q = { ...q, body: marked.parse(q.body) };
+      return res.render("view-question.njk", { q });
+    })
+    .catch((err) => next(err));
 });
 
-router.get("/edit/:id", async (req, res) => {
+router.get("/edit/:id", async (req, res, next) => {
   const { id } = req.params;
-  return Question.findById(id).then(q => {
-    return res.render("edit-question.njk", {q});
-  })
+  return Question.findById(id)
+    .then((q) => {
+      return res.render("edit-question.njk", { q });
+    })
+    .catch((err) => next(err));
 });
 
 module.exports = router;
