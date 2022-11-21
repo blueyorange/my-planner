@@ -25,3 +25,7 @@
 a {
     text-decoration: none;
 }
+#question-preview img {
+    width: 100%;
+    height: auto;
+}

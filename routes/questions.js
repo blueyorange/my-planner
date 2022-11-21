@@ -68,7 +68,12 @@ router.get("/view/:id", async (req, res, next) => {
   const { id } = req.params;
   return Question.findById(id)
     .then((q) => {
-      q = { ...q, body: marked.parse(q.body) };
+      q = {
+        body: marked.parse(q.body),
+        id: q._id.toString(),
+        options: q.options,
+        tags: q.tags,
+      };
       return res.render("view-question.njk", { q });
     })
     .catch((err) => next(err));
@@ -78,9 +83,27 @@ router.get("/edit/:id", async (req, res, next) => {
   const { id } = req.params;
   return Question.findById(id)
     .then((q) => {
+      q.id = q._id.toString();
       return res.render("edit-question.njk", { q });
     })
     .catch((err) => next(err));
+});
+
+router.post("/edit/:id", (req, res, next) => {
+  const { id } = req.params;
+  const body = req.body.body;
+  const options = Object.keys(req.body)
+    .filter((key) => /option-\d/.test(key))
+    .map((key) => form[key]);
+  const correct = req.body.correct;
+  console.log(form);
+  const question = {
+    body: form["body"],
+    options: Object.keys(form)
+      .filter((key) => /option-\d/.test(key))
+      .map((key) => form[key]),
+  };
+  console.log(question);
 });
 
 module.exports = router;

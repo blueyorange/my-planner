@@ -2,31 +2,33 @@
 {% extends "base.njk" %}
 {% block content %}
     {% include "header.njk" %}
-    <div class="container">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
-                <form action="/questions/create" method="post">
+                <h2>Edit</h2>
+                <form action="{{ q.id }}" method="post">
                     <div class="mb-3">
-                        <label for="questionTextarea" class="form-label">Question</label>
-                        <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown" value="{{ q.body }}"></textarea>
+                        <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown">{{ q.body }}</textarea>
                     </div>
                     {% for option in q.options %}
                         <div class="input-group mb-3">
-                            <input
-                                name="option-{{ loop.index }}"
-                                type="text"
-                                class="form-control"
-                                aria-label="Text input with checkbox"
-                                value="option"/>
-                            <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input"/>
+                            <input name="option-{{ loop.index }}" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
+                            <div class="input-group-text" value="">
+                                {% if q.correct.includes(option) %}
+                                    <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input" checked/>
+                                {% else %}
+                                    <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input"/>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
-            <div class="col" id="rendered"></div>
+            <div class="col">
+                <h2>Preview</h2>
+                <div id="question-preview"></div>
+            </div>
         </div>
     </div>
     <script
@@ -41,41 +43,5 @@
         crossorigin="anonymous"
         onload=""></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        (function () {
-            const form = document.querySelector('form');
-            const formData = new FormData(form)
-            const optionNodeList = document.querySelectorAll("input[name^='option']")
-            const questionNode = document.querySelector("textarea[name='body']");
-            const renderedNode = document.querySelector('#rendered');
-            function
-            onInput (e) {
-                const key = e.target.name;
-                const value = e.target.value;
-                formData[key] = value;
-                renderedNode.innerHTML = marked.parse(formData['body']);
-                renderedNode
-                    .querySelector('table')
-                    .classList
-                    .add('table');
-                renderMathInElement(renderedNode, {
-                    delimiters: [
-                        {
-                            left: '$$',
-                            right: '$$',
-                            display: true
-                        }, {
-                            left: '$',
-                            right: '$',
-                            display: false
-                        }
-                    ]
-                });
-            }
-            questionNode.addEventListener('input', onInput);
-            optionNodeList.forEach(node => {
-                node.addEventListener('input', onInput);
-            });
-        })();
-    </script>
+    <script src="/previewQuestion.js" type="module"></script>
 {% endblock %}
