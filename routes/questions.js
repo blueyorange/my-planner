@@ -21,7 +21,8 @@ router.get("/", async (req, res) => {
   const { docs, total, pages } = await Question.paginate(query, {
     page,
     limit,
-  }).catch((err) => next(err, req, res, next));
+  }).catch((err) => next(err));
+
   const numPagOptions = 5;
   const minAdvance = 3;
   const startPaginate = page > minAdvance ? page - minAdvance : 1;
@@ -48,62 +49,36 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/create", (req, res) => {
-  return res.render("edit-question.njk");
+router.get("/create", (req, res, next) => {
+  return res.render("question.njk", { q, mode: "create", parse: marked.parse });
 });
 
-router.post("/create", (req, res) => {
-  const form = req.body;
-  options = new Map();
-  ["A", "B", "C", "D"].forEach((letter) => {
-    options[letter] = form[`option-${letter}`];
-  });
-  const correct = form.correct;
-  return Question.create({ question: form.question, options, correct }).then(
-    (q) => res.render("view-question.njk", { q })
-  );
-});
-
-router.get("/view/:id", async (req, res, next) => {
+router.get("/:id", (req, res, next) => {
+  let { mode } = req.query;
   const { id } = req.params;
   return Question.findById(id)
     .then((q) => {
-      q = {
-        body: marked.parse(q.body),
-        id: q._id.toString(),
-        options: q.options,
-        tags: q.tags,
-      };
-      return res.render("view-question.njk", { q });
+      return res.render("question.njk", { q, mode, parse: marked.parse });
     })
     .catch((err) => next(err));
 });
 
-router.get("/edit/:id", async (req, res, next) => {
-  const { id } = req.params;
-  return Question.findById(id)
-    .then((q) => {
-      q.id = q._id.toString();
-      return res.render("edit-question.njk", { q });
-    })
-    .catch((err) => next(err));
-});
-
-router.post("/edit/:id", (req, res, next) => {
-  const { id } = req.params;
-  const body = req.body.body;
-  const options = Object.keys(req.body)
-    .filter((key) => /option-\d/.test(key))
-    .map((key) => form[key]);
-  const correct = req.body.correct;
-  console.log(form);
-  const question = {
-    body: form["body"],
+function questionFromForm(form) {
+  const { body, correct } = form;
+  return {
+    body,
+    correct,
+    type: "multiple-choice",
     options: Object.keys(form)
       .filter((key) => /option-\d/.test(key))
       .map((key) => form[key]),
   };
-  console.log(question);
+}
+
+router.put("/:id", (req, res, next) => {
+  const { id } = req.params;
+  const q = questionFromForm(req.body);
+  console.log(q);
 });
 
 module.exports = router;

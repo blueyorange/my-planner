@@ -1,12 +1,11 @@
 {% set title="questions" %}
 {% extends "base.njk" %}
-{% block content %}
-    {% include "header.njk" %}
-    <div class="container mt-3">
+{% macro questionEditor(question) %}
+    <div class="container">
         <div class="row">
             <div class="col">
                 <h2>Edit</h2>
-                <form action="{{ q.id }}" method="post">
+                <form action="{{ q.id }}" method="{% if mode=="edit" %}put{% elif mode=="create" %}post{% endif %}">
                     <div class="mb-3">
                         <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown">{{ q.body }}</textarea>
                     </div>
@@ -31,17 +30,34 @@
             </div>
         </div>
     </div>
-    <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
-        integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
-        crossorigin="anonymous"></script>
-    <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
-        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
-        crossorigin="anonymous"
-        onload=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/previewQuestion.js" type="module"></script>
+{% endmacro %}
+{% macro questionViewer(q) %}
+    <div class="container">
+        <div class="row mt-3">
+            <div class="d-flex justify-content-around">
+                <a href="/questions/{{ q.id }}?mode=edit" class="btn btn-primary" role="button">Edit</a>
+                <a class="btn btn-primary" role="button">Live poll</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="question">
+                <p>{{ parse(q.body) | safe }}</p>
+            </div>
+        </div>
+    </div>
+    <style>
+        .question img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+{% endmacro %}
+{% block content %}
+    {% include "header.njk" %}
+    {% if mode=="edit" %}
+        {{ questionEditor(q) }}
+    {% else %}
+        {{ questionViewer(q) }}
+    {% endif %}
 {% endblock %}

@@ -10,13 +10,13 @@ const questionFromForm = (form) => {
   };
 };
 
-const renderQuestion = (q, enableOptions = true) => {
+const renderQuestion = (q, options) => {
   const optionsHtml = q.options.map(
     (option) => `
   <div class="form-check">
   <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" ${
-    enableOptions ? "" : "disabled"
-  }disabled>
+    options.enableOptions ? "" : "disabled"
+  }>
   <label class="form-check-label" for="flexRadioDefault1">
     ${marked.parse(option)}
   </label>
@@ -50,11 +50,11 @@ const renderQuestion = (q, enableOptions = true) => {
 
 function onInput(e) {
   const q = questionFromForm(e.target.form);
-  renderQuestion(q, false);
+  renderQuestion(q, { enableOptions: false });
 }
 
 const questionForm = document.querySelector("form");
 
 questionForm.addEventListener("input", onInput);
 
-renderQuestion(questionFromForm(questionForm), false);
+renderQuestion(questionFromForm(questionForm), { enableOptions: false });

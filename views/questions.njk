@@ -39,7 +39,7 @@
             <div class="row d-flex justify-content-around">
                 {% for q in questions %}
                     <div class="question-card">
-                        <a href="/questions/view/{{ q._id }}">
+                        <a href="/questions/{{ q._id }}">
                             <div class="question-body">
                                 {{ q.body | safe }}
                             </div>
