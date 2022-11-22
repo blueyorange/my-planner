@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/question.model.js");
+const Poll = require("../models/poll.model.js");
 const { marked } = require("marked");
+const { default: mongoose } = require("mongoose");
+const { serializeUser } = require("passport");
 
 router.get("/", async (req, res) => {
   let { page = 1, limit = 18, tags } = req.query;
@@ -97,15 +100,16 @@ router.get("/:id/edit", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.put("/:id", (req, res, next) => {});
-
 router.get("/:id", (req, res, next) => {
   const { id } = req.params;
   return Question.findById(id)
     .then((q) => {
       return res.render("question.njk", { q, parse: marked.parse });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      req.flash("error", "Question not found.");
+      res.redirect("/questions");
+    });
 });
 
 router.get("/:id/delete", (req, res, next) => {
@@ -118,6 +122,27 @@ router.get("/:id/delete", (req, res, next) => {
     .catch((err) => {
       req.flash("error", "Question not deleted.");
       return res.redirect("/questions");
+    });
+});
+
+router.get("/:id/poll", async (req, res, next) => {
+  const { id } = req.params;
+  const joinCode = Math.random().toString(32).slice(-4);
+  return Question.findById(id)
+    .then((q) => {
+      return Poll.create({ joinCode, question: q, teacher: req.user._id });
+    })
+    .then((poll) => {
+      return res.render("poll-teacher.njk", {
+        q: poll.question,
+        parse: marked.parse,
+        joinCode,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      req.flash("error", "Question not found.");
+      res.redirect("/questions");
     });
 });
 

@@ -14,12 +14,22 @@ var passport = require("passport");
 var session = require("express-session");
 const MongoStore = require("connect-mongo");
 
+const app = express();
+
+// Socket io
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("A user connected");
+});
+
 // routes
 const home = require("./routes/home.js");
 const auth = require("./routes/auth.js");
 const questions = require("./routes/questions.js");
-
-const app = express();
+const poll = require("./routes/poll.js");
 
 // middleware
 app.use(express.json());
@@ -61,6 +71,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // routes
 app.use("/", home);
 app.use("/auth", auth);
+app.use("/join", poll);
 app.use(function (req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
@@ -68,6 +79,7 @@ app.use(function (req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
+  res.locals.baseUrl = process.env["ORIGIN_URI"];
   next();
 });
 app.use("/questions", questions);
@@ -77,4 +89,4 @@ app.use(handleServerErrors);
 
 const { PORT = 3000 } = process.env;
 console.log(`Listening on port ${PORT}...`);
-app.listen(PORT);
+server.listen(PORT);

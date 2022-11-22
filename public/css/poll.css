@@ -1,0 +1,32 @@
+body {
+    background: black;
+    color: lightgrey;
+    height: 100vh;
+    width: 100vw;
+    padding: 1vw;
+}
+.question {
+    color: #212529;
+    background-color: white;
+    font-size: xx-large;
+    max-width: 100%;
+}
+.question img {
+    width: 100%;
+    height: auto;
+}
+.options {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+.option {
+    font-weight: bold;
+    text-align: center;
+    min-width: 200px;
+    border: 2px solid lightgrey;
+    font-size: x-large;
+    border-radius: 2vh;
+}

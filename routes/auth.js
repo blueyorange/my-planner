@@ -3,7 +3,6 @@ const router = express.Router();
 var passport = require("passport");
 var GoogleStrategy = require("passport-google-oidc");
 const User = require("../models/user.model.js");
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 passport.use(
   new GoogleStrategy(

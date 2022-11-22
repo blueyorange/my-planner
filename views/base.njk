@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>
         {% block title %}
-          {{ title }}
+          Pivot - {{ title }}
         {% endblock %}
       </title>
       <link
@@ -38,6 +38,9 @@
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
       {% if title=='questions' %}
         <link rel="stylesheet" href="/css/questions.css">
+      {% endif %}
+      {% if title=='poll' %}
+        <link rel="stylesheet" href="/css/poll.css">
       {% endif %}
     {% endblock %}
   </head>
