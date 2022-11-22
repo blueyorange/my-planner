@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col">
                 <h2>Edit</h2>
-                <form action="/questions/{{ action }}" method="POST">
+                <form action="/questions/{{ q._id }}" method="POST">
                     <div class="mb-3">
                         <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown">{{ q.body }}</textarea>
                     </div>
