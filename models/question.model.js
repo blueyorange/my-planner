@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
 
-const QuestionSchema = new mongoose.Schema({
-  body: { type: String },
-  options: [{ type: String }],
-  correct: [{ type: String }],
-  tags: [{ type: String }],
-  source: { type: String },
-  images: [{ type: String }],
-  type: { type: String },
-});
+const QuestionSchema = new mongoose.Schema(
+  {
+    body: { type: String },
+    options: [{ type: String }],
+    correct: [{ type: String }],
+    tags: [{ type: String }],
+    source: { type: String },
+    images: [{ type: String }],
+    type: { type: String },
+  },
+  { timestamps: true }
+);
 
 QuestionSchema.plugin(mongoosePaginate);
 

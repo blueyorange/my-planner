@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   let query = {};
   let queryString = "";
   if (tags) {
-    query = { tags: { $all: tags } };
+    query.tags = { $all: tags };
     const queryParams = new URLSearchParams({ tags });
     queryString = queryParams.toString().replaceAll("%2C", "&tags=");
   } else {
@@ -21,6 +21,7 @@ router.get("/", async (req, res) => {
   const { docs, total, pages } = await Question.paginate(query, {
     page,
     limit,
+    sort: { createdAt: -1 },
   }).catch((err) => next(err));
 
   const numPagOptions = 5;
@@ -96,6 +97,19 @@ router.get("/:id", (req, res, next) => {
       return res.render("question.njk", { q, parse: marked.parse });
     })
     .catch((err) => next(err));
+});
+
+router.get("/:id/delete", (req, res, next) => {
+  const { id } = req.params;
+  return Question.findByIdAndDelete(id)
+    .then(() => {
+      req.flash("success", "Question deleted.");
+      return res.redirect("/questions");
+    })
+    .catch((err) => {
+      req.flash("error", "Question not deleted.");
+      return res.redirect("/questions");
+    });
 });
 
 module.exports = router;
