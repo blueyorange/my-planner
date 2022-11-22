@@ -5,13 +5,13 @@
         <div class="row">
             <div class="col">
                 <h2>Edit</h2>
-                <form action="{{ q.id }}" method="{% if mode=="edit" %}put{% elif mode=="create" %}post{% endif %}">
+                <form action="{% if edit %}{{ q._id }}{% endif %}" method="{% if edit %}put{% else %}post{% endif %}">
                     <div class="mb-3">
                         <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown">{{ q.body }}</textarea>
                     </div>
                     {% for option in q.options %}
                         <div class="input-group mb-3">
-                            <input name="option-{{ loop.index }}" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
+                            <input name="options" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
                             <div class="input-group-text" value="">
                                 {% if q.correct.includes(option) %}
                                     <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input" checked/>
@@ -36,7 +36,7 @@
     <div class="container">
         <div class="row mt-3">
             <div class="d-flex justify-content-around">
-                <a href="/questions/{{ q.id }}?mode=edit" class="btn btn-primary" role="button">Edit</a>
+                <a href="/questions/{{ q.id }}?edit=true" class="btn btn-primary" role="button">Edit</a>
                 <a class="btn btn-primary" role="button">Live poll</a>
             </div>
         </div>
@@ -55,7 +55,7 @@
 {% endmacro %}
 {% block content %}
     {% include "header.njk" %}
-    {% if mode=="edit" %}
+    {% if edit %}
         {{ questionEditor(q) }}
     {% else %}
         {{ questionViewer(q) }}

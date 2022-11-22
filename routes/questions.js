@@ -4,7 +4,7 @@ const Question = require("../models/question.model.js");
 const { marked } = require("marked");
 
 router.get("/", async (req, res) => {
-  let { page = 1, limit = 18, tags } = req.query;
+  let { page = 1, limit = 18, tags} = req.query;
   page = Number(page);
   if (!page) {
     return next();
@@ -50,35 +50,27 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/create", (req, res, next) => {
-  return res.render("question.njk", { q, mode: "create", parse: marked.parse });
-});
+  return res.render("question.njk", { edit : false, parse: marked.parse, q: { body: "", options: Array(4)}});
+})
+
+router.post("/", (req, res, next) => {
+  return res.render("question.njk")
+})
 
 router.get("/:id", (req, res, next) => {
-  let { mode } = req.query;
+  let edit = (req.query.edit=='true');
   const { id } = req.params;
+  console.log(id)
   return Question.findById(id)
     .then((q) => {
-      return res.render("question.njk", { q, mode, parse: marked.parse });
+      return res.render("question.njk", { q, edit, parse: marked.parse});
     })
     .catch((err) => next(err));
 });
 
-function questionFromForm(form) {
-  const { body, correct } = form;
-  return {
-    body,
-    correct,
-    type: "multiple-choice",
-    options: Object.keys(form)
-      .filter((key) => /option-\d/.test(key))
-      .map((key) => form[key]),
-  };
-}
-
 router.put("/:id", (req, res, next) => {
   const { id } = req.params;
-  const q = questionFromForm(req.body);
-  console.log(q);
+  console.log(req.body);
 });
 
 module.exports = router;

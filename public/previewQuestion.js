@@ -1,6 +1,6 @@
 const questionFromForm = (form) => {
   const formData = new FormData(form);
-  console.log(formData.get("body"));
+  console.log(formData.getAll("options"));
   return {
     body: formData.get("body"),
     correct: formData["correct"],
