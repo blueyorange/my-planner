@@ -1,12 +1,9 @@
 const questionFromForm = (form) => {
   const formData = new FormData(form);
-  console.log(formData.getAll("options"));
   return {
     body: formData.get("body"),
-    correct: formData["correct"],
-    options: Array.from(formData.keys())
-      .filter((key) => /option-\d/.test(key))
-      .map((key) => formData.get(key)),
+    correct: [formData.get("correct")],
+    options: formData.getAll("options")
   };
 };
 

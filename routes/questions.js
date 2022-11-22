@@ -49,28 +49,49 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/create", (req, res, next) => {
-  return res.render("question.njk", { edit : false, parse: marked.parse, q: { body: "", options: Array(4)}});
+router.get("/new", (req, res, next) => {
+  return res.render("edit-question.njk", { method: "POST", action : "", parse: marked.parse, q: { body: "", options: Array(4)}});
+})
+
+router.post("/:id", (req, res, next) => {
+  console.log("POST");
+  const { id } = req.params;
+  const q = req.body;
+  return Question.findByIdAndUpdate(id, { q }).then(result => {
+    console.log(result);
+    return res.redirect(id);
+    ;
+  })
 })
 
 router.post("/", (req, res, next) => {
-  return res.render("question.njk")
+  const q = req.body;
+    console.log("PUT");
+    return Question.create(q).then(newQuestion => {
+      console.log(newQuestion);
+      return res.redirect(newQuestion._id);
+    })
+
+})
+
+router.get("/:id/edit", (req, res, next) => {
+  const { id } = req.params;
+  return Question.findById(id).then(q => {
+    return res.render("edit-question.njk", {q, action: id, method: "PUT", parse: marked.parse})
+  }).catch(err => next(err))
+})
+
+router.put("/:id", (req, res, next) => {
+
 })
 
 router.get("/:id", (req, res, next) => {
-  let edit = (req.query.edit=='true');
   const { id } = req.params;
-  console.log(id)
   return Question.findById(id)
     .then((q) => {
-      return res.render("question.njk", { q, edit, parse: marked.parse});
+      return res.render("question.njk", { q, parse: marked.parse});
     })
     .catch((err) => next(err));
-});
-
-router.put("/:id", (req, res, next) => {
-  const { id } = req.params;
-  console.log(req.body);
 });
 
 module.exports = router;
