@@ -52,7 +52,6 @@ router.get("/", async (req, res) => {
 
 router.get("/new", (req, res, next) => {
   return res.render("edit-question.njk", {
-    method: "POST",
     action: "",
     parse: marked.parse,
     q: { body: "", options: Array(4) },
@@ -62,18 +61,28 @@ router.get("/new", (req, res, next) => {
 router.post("/:id", (req, res, next) => {
   const { id } = req.params;
   const q = req.body;
-  return Question.findByIdAndUpdate(id, q).then((result) => {
-    console.log(result);
-    return res.redirect(id);
-  });
+  return Question.findByIdAndUpdate(id, q)
+    .then((result) => {
+      req.flash("success", "Question updated.");
+      return res.redirect(id);
+    })
+    .catch((err) => {
+      req.flash("error", "Question not saved.");
+      res.redirect("/:id/edit");
+    });
 });
 
 router.post("/", (req, res, next) => {
   const q = req.body;
-  return Question.create(q).then((newQuestion) => {
-    console.log(newQuestion);
-    return res.redirect(newQuestion._id);
-  });
+  return Question.create(q)
+    .then((newQuestion) => {
+      req.flash("success", "New question added.");
+      return res.redirect(newQuestion._id);
+    })
+    .catch((err) => {
+      req.flash("error", "Question not saved.");
+      res.render("edit-question.njk", { q, action: "", parse: marked.parse });
+    });
 });
 
 router.get("/:id/edit", (req, res, next) => {
