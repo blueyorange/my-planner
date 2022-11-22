@@ -50,7 +50,7 @@
                                 {% for tag in q.tags %}
                                     <a
                                         href="?{{ queryString }}{% if queryString %}&{% endif %}tags={{ tag | urlencode }}"
-                                        class="badge bg-primary"
+                                        class="badge bg-{% if tag in tags %}primary{% else %}secondary{% endif %} mb-1"
                                         role="button">{{ tag }}</a>
                                 {% endfor %}
                             </div>
