@@ -1,0 +1,16 @@
+{% macro messages(messages, alert, strong) %}
+    {% for msg in messages %}
+        <div class="alert alert-{{ alert }} alert-dismissible fade show" role="alert">
+            <strong>{{ strong }}
+            </strong>
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endmacro %}
+{% if success %}
+    {{ messages(success, 'success', 'Success!') }}
+{% endif %}
+{% if error %}
+    {{ messages(error, 'danger', 'Error!') }}
+{% endif %}

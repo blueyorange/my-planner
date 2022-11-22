@@ -4,6 +4,9 @@
     {% include "header.njk" %}
     <div class="container mt-3">
         <div class="row mt-3">
+            {% include 'messages.njk' %}
+        </div>
+        <div class="row mt-3">
             <div class="d-flex justify-content-around">
                 <a href="/questions/{{ q.id }}/edit" class="btn btn-primary" role="button">Edit</a>
                 <a href="/questions/{{ q.id }}/delete" class="btn btn-danger" role="button">Delete</a>
