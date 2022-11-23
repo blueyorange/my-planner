@@ -71,7 +71,6 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // routes
 app.use("/", home);
 app.use("/auth", auth);
-app.use("/join", poll);
 app.use(function (req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
@@ -80,9 +79,10 @@ app.use(function (req, res, next) {
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   res.locals.baseUrl = process.env["ORIGIN_URI"];
-  res.locals.joinUrl = res.locals.baseUrl + '/join/'
+  res.locals.joinUrl = res.locals.baseUrl + "/join/";
   next();
 });
+app.use("/poll", poll);
 app.use("/questions", questions);
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);

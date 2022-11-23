@@ -106,10 +106,7 @@ router.get("/:id", (req, res, next) => {
     .then((q) => {
       return res.render("question.njk", { q, parse: marked.parse });
     })
-    .catch((err) => {
-      req.flash("error", "Question not found.");
-      res.redirect("/questions");
-    });
+    .catch((err) => next(err));
 });
 
 router.get("/:id/delete", (req, res, next) => {
@@ -125,7 +122,7 @@ router.get("/:id/delete", (req, res, next) => {
     });
 });
 
-router.get("/:id/poll", async (req, res, next) => {
+router.get("/:id/poll", (req, res, next) => {
   const { id } = req.params;
   const joinCode = Math.random().toString(32).slice(-4);
   return Question.findById(id)
@@ -133,17 +130,9 @@ router.get("/:id/poll", async (req, res, next) => {
       return Poll.create({ joinCode, question: q, teacher: req.user._id });
     })
     .then((poll) => {
-      return res.render("poll-teacher.njk", {
-        q: poll.question,
-        parse: marked.parse,
-        joinCode,
-      });
+      return res.redirect(`/poll/teacher/${joinCode}`);
     })
-    .catch((err) => {
-      console.log(err);
-      req.flash("error", "Question not found.");
-      res.redirect("/questions");
-    });
+    .catch((err) => next(err));
 });
 
 module.exports = router;

@@ -6,26 +6,25 @@
     <script>
         var socket = io();
     </script>
-    <script src="poll-teacher.js"></script>
+    <script></script>
 {% endblock %}
 {% block content %}
     <div class="d-flex justify-content-between">
         <h2>{{ joinUrl }}{{ joinCode }}</h2>
         <h2 id="join-status"></h2>
+    </div>
+</div>
+<div class="row">
+    <div class="question">
+        <div class="body">
+            {{ parse(q.body) | safe }}
+        </div>
+        <div class="options">
+            {% for option in q.options %}
+                <div class="option p-3 m-2">
+                    {{ parse(option) | safe }}
+                </div>
+            {% endfor %}
         </div>
     </div>
-    <div class="row">
-        <div class="question">
-            <div class="body">
-                {{ parse(q.body) | safe }}
-            </div>
-            <div class="options">
-                {% for option in q.options %}
-                    <div class="option p-3 m-2">
-                        {{ parse(option) | safe }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-{% endblock %}
+</div>{% endblock %}

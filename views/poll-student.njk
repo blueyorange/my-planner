@@ -6,6 +6,7 @@
     <script>
         var socket = io();
     </script>
+    <script></script>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -13,12 +14,12 @@
             <div class="body">
                 {{ parse(q.body) | safe }}
             </div>
-            <div class="options">
+            <form class="options" action="" method="post">
                 {% for option in q.options %}
-                    <input id="option-{{loop.index}}" class="student-option" type="radio" value="{{ option }}" name="options" aria-label="radio"/>
-                    <label for="option-{{loop.index}}">{{ option }}</label>
+                    <input id="option-{{ loop.index }}" class="student-option" type="radio" value="{{ option }}" name="options" aria-label="radio"/>
+                    <label for="option-{{ loop.index }}">{{ option }}</label>
                 {% endfor %}
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}

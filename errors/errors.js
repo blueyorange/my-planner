@@ -7,8 +7,10 @@ exports.handleInvalidUrlErrors = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
+  console.log(err.name);
   if (err.name === "CastError") {
-    return res.status(404).render("404.njk");
+    req.flash("error", "Resource could not be found.");
+    return res.status(404).redirect("/questions");
   } else {
     next(err);
   }
