@@ -3,20 +3,6 @@
 {% block head %}
     {{ super() }} <link rel="stylesheet" href="/css/poll.css"/>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        const form = document.querySelector('form');
-        const joinCode = window
-            .href
-            .split('/')
-            .pop();
-        console.log(joinCode);
-        socket.emit('join', joinCode);
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(e.target.form);
-        })
-    </script>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -25,11 +11,39 @@
                 {{ parse(q.body) | safe }}
             </div>
             <form class="options" action="" method="post">
+                <input type="hidden" name="userId" value="{{ userId }}"/>
+                <input type="hidden" name="questionId" value="{{ q._id }}"/>
+                <input type="hidden" name="pollId" value="{{ pollId }}"/>
                 {% for option in q.options %}
-                    <input id="option-{{ loop.index }}" class="student-option" type="radio" value="{{ option }}" name="options" aria-label="radio"/>
+                    <input id="option-{{ loop.index }}" class="btn btn-light" type="radio" value="{{ option }}" name="answer" aria-label="radio"/>
                     <label for="option-{{ loop.index }}">{{ option }}</label>
                 {% endfor %}
+                <button id="button-submit" class="btn btn-primary" role="submit" style="width: 100%; margin: 10px;" disabled>Submit</button>
             </form>
         </div>
     </div>
+    <script defer>
+        const socket = io();
+        const form = document.querySelector('form');
+        const joinCode = window
+            .location
+            .href
+            .split('/')
+            .pop();
+        socket.emit('join', joinCode);
+        form.addEventListener('input', function (e) {
+            const formData = new FormData(e.target.form);
+            const answer = formData.get("answer");
+            document.querySelector('#button-submit').removeAttribute('disabled');
+        })
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const answer = formData.get("answer");
+            const userId = formData.get("userId");
+            const questionId = formData.get("questionId");
+            const pollId = formData.get("pollId");
+            socket.emit("respond", {userId, pollId, questionId, answer});
+        });
+    </script>
 {% endblock %}

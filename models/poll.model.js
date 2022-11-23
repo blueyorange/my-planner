@@ -1,20 +1,11 @@
 const mongoose = require("mongoose");
-const QuestionSchema = require("./question.model.js").schema;
-
-const PollResultSchema = new mongoose.Schema(
-  {
-    student: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    answer: { type: String },
-    expired: { type: Boolean },
-  },
-  { timestamps: true }
-);
 
 const PollSchema = new mongoose.Schema({
-  question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
   joinCode: { type: String },
+  question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  results: [{ type: PollResultSchema }],
+  results: [{ type: mongoose.Schema.Types.ObjectId, ref: "PollResult" }],
+  expired: { type: Boolean },
 });
 
 module.exports = mongoose.model("Poll", PollSchema);
