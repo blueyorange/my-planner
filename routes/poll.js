@@ -9,7 +9,6 @@ router.get("/teacher/:joinCode", async (req, res, next) => {
     .populate("question")
     .exec()
     .then((poll) => {
-      console.log(poll);
       return res.render("poll-teacher.njk", {
         q: poll.question,
         parse: marked.parse,

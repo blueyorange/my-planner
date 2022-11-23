@@ -5,8 +5,18 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
+        const room = window
+            .location
+            .href
+            .split('/')
+            .pop();
+        socket.emit('join' {
+            room
+        })
+        socket.on('join', () => {
+            console.log('student joined');
+        });
     </script>
-    <script></script>
 {% endblock %}
 {% block content %}
     <div class="d-flex justify-content-between">

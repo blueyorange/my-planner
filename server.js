@@ -17,21 +17,12 @@ const MongoStore = require("connect-mongo");
 const app = express();
 
 // Socket io
-const Poll = require("./models/poll.model.js");
-const PollResult = require("./models/pollResult.model.js");
-const Question = require("./models/question.model.js");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-io.on("connection", (socket) => {
-  socket.on("join", (joinCode) => {
-    socket.join(joinCode);
-  });
-  socket.on("respond", (response) => {
-    const { pollId, questionId, userId, answer } = response;
-  });
-});
+const connect = require("./socket/connect.js");
+io.on("connection", connect);
 
 // routes
 const home = require("./routes/home.js");

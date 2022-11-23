@@ -25,12 +25,14 @@
     <script defer>
         const socket = io();
         const form = document.querySelector('form');
-        const joinCode = window
+        const room = window
             .location
             .href
             .split('/')
             .pop();
-        socket.emit('join', joinCode);
+        const formData = new FormData(form);
+        const userId = formData.get("userId");
+        socket.emit('join', {room, userId, role: 'student'});
         form.addEventListener('input', function (e) {
             const formData = new FormData(e.target.form);
             const answer = formData.get("answer");
@@ -43,7 +45,7 @@
             const userId = formData.get("userId");
             const questionId = formData.get("questionId");
             const pollId = formData.get("pollId");
-            socket.emit("respond", {userId, pollId, questionId, answer});
+            socket.emit("submit", {userId, pollId, questionId, answer});
         });
     </script>
 {% endblock %}
