@@ -80,6 +80,7 @@ app.use(function (req, res, next) {
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   res.locals.baseUrl = process.env["ORIGIN_URI"];
+  res.locals.joinUrl = res.locals.baseUrl + '/join/'
   next();
 });
 app.use("/questions", questions);

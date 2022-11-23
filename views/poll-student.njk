@@ -15,16 +15,8 @@
             </div>
             <div class="options">
                 {% for option in q.options %}
-                    <div class="input-group mb-3">
-                        <input name="options" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
-                        <div class="input-group-text" value="">
-                            {% if q.correct and q.correct.includes(option) %}
-                                <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input" checked/>
-                            {% else %}
-                                <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input"/>
-                            {% endif %}
-                        </div>
-                    </div>
+                    <input id="option-{{loop.index}}" class="student-option" type="radio" value="{{ option }}" name="options" aria-label="radio"/>
+                    <label for="option-{{loop.index}}">{{ option }}</label>
                 {% endfor %}
             </div>
         </div>
