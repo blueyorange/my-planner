@@ -22,7 +22,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("User connected.");
+  io.on("join", (joinCode) => {
+    console.log(joinCode);
+  });
 });
 
 // routes
@@ -86,7 +89,6 @@ app.use("/poll", poll);
 app.use("/questions", questions);
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
-app.use(handleServerErrors);
 
 const { PORT = 3000 } = process.env;
 console.log(`Listening on port ${PORT}...`);

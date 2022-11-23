@@ -7,17 +7,7 @@ exports.handleInvalidUrlErrors = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  console.log(err.name);
-  if (err.name === "CastError") {
-    req.flash("error", "Resource could not be found.");
-    return res.status(404).redirect("/questions");
-  } else {
-    next(err);
-  }
-};
-
-exports.handleServerErrors = (err, req, res, next) => {
   console.log(err);
-  const error = { code: "500 Server error", message: err };
-  res.status(500).render("error.njk", { error });
+  req.flash("error", err);
+  return res.status(err.status).redirect("/questions");
 };

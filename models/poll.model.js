@@ -3,7 +3,7 @@ const QuestionSchema = require("./question.model.js").schema;
 
 const PollResultSchema = new mongoose.Schema(
   {
-    student: { type: mongoose.Schema.Types.ObjectId },
+    student: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     answer: { type: String },
     expired: { type: Boolean },
   },
@@ -11,9 +11,9 @@ const PollResultSchema = new mongoose.Schema(
 );
 
 const PollSchema = new mongoose.Schema({
-  question: { type: QuestionSchema },
+  question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
   joinCode: { type: String },
-  teacher: { type: mongoose.Schema.Types.ObjectId },
+  teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   results: [{ type: PollResultSchema }],
 });
 

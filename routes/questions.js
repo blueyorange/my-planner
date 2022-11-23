@@ -97,7 +97,7 @@ router.get("/:id/edit", (req, res, next) => {
         parse: marked.parse,
       });
     })
-    .catch((err) => next(err));
+    .catch((err) => next());
 });
 
 router.get("/:id", (req, res, next) => {
@@ -127,10 +127,20 @@ router.get("/:id/poll", (req, res, next) => {
   const joinCode = Math.random().toString(32).slice(-4);
   return Question.findById(id)
     .then((q) => {
-      return Poll.create({ joinCode, question: q, teacher: req.user._id });
-    })
-    .then((poll) => {
-      return res.redirect(`/poll/teacher/${joinCode}`);
+      if (!q) {
+        return Promise.reject({
+          name: "Incorrrect Id",
+          message: "Question not found.",
+        });
+      } else {
+        return Poll.create({
+          joinCode,
+          question: id,
+          teacher: req.user._id,
+        }).then((poll) => {
+          return res.redirect(`/poll/teacher/${joinCode}`);
+        });
+      }
     })
     .catch((err) => next(err));
 });

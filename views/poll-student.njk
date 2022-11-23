@@ -4,9 +4,19 @@
     {{ super() }} <link rel="stylesheet" href="/css/poll.css"/>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
+        const socket = io();
+        const form = document.querySelector('form');
+        const joinCode = window
+            .href
+            .split('/')
+            .pop();
+        console.log(joinCode);
+        socket.emit('join', joinCode);
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target.form);
+        })
     </script>
-    <script></script>
 {% endblock %}
 {% block content %}
     <div class="row">
