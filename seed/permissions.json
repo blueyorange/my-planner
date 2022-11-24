@@ -1,0 +1,16 @@
+{
+  "permissions": [
+    {
+      "name": "create-question"
+    },
+    {
+      "name": "edit-question"
+    },
+    {
+      "name": "delete-question"
+    },
+    {
+      "name": "answer-question"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "roles": [
+    {
+      "name": "Admin",
+      "permissions": [
+        {
+          "name": "create-question"
+        },
+        {
+          "name": "edit-question"
+        },
+        {
+          "name": "delete-question"
+        }
+      ]
+    },
+    {
+      "name": "Teacher",
+      "permissions": [
+        {
+          "name": "create-question"
+        },
+        {
+          "name": "edit-question"
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "permissions": [
+        {
+          "name": "answer-question"
+        }
+      ]
+    }
+  ]
+}

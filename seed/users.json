@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "source": "https://accounts.google.com",
+      "id": "112970617713664374486",
+      "displayName": "Russell Johnson",
+      "name": {
+        "givenName": "Russell",
+        "familyName": "Johnson"
+      },
+      "__v": 0
+    }
+  ]
+}
