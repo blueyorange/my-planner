@@ -6,23 +6,29 @@ const UserSchema = new mongoose.Schema({
   id: { type: String, default: null, unique: true },
   displayName: { type: String, required: true },
   name: { givenName: { type: String }, familyName: { type: String } },
-  role: { type: String, ref: "Role" },
-  permissions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Permission" }],
+  role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
 });
 
 UserSchema.methods.assignRole = async function (roleName) {
-  console.log("In assignrole.");
   const role = await Role.findOne({ name: roleName });
   if (role) {
     this.role = role;
-    this.permissions = role.permissions;
     this.save();
   } else {
-    throw new Error({
-      name: "Role error.",
-      message: "Invalid role name for assignment.",
-    });
+    throw new Error("Invalid role name for assignment.");
   }
+};
+
+UserSchema.methods.can = async function (permission) {
+  if (!permission) {
+    throw new Error("You must provide a permission name.");
+  }
+  const user = await this.populate({
+    path: "role",
+    model: "Role",
+    populate: { path: "permissions", model: "Permission" },
+  });
+  return await user.role.permissions.some((p) => p.name === permission);
 };
 
 module.exports = mongoose.model("User", UserSchema);

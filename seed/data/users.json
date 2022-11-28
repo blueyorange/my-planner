@@ -8,7 +8,7 @@
         "givenName": "Russell",
         "familyName": "Johnson"
       },
-      "__v": 0
+      "role": "Admin"
     }
   ]
 }

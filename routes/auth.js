@@ -16,8 +16,11 @@ passport.use(
       const { id, name, displayName } = profile;
       const user = await User.findOne({ id, source }).exec();
       if (!user) {
-        return User.create({ source, id, name, displayName }).then((user) =>
-          cb(null, user)
+        return User.create({ source, id, name, displayName }).then(
+          async (user) => {
+            await user.assignRole("Student");
+            cb(null, user);
+          }
         );
       } else {
         return cb(null, user);

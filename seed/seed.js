@@ -8,7 +8,7 @@ async function run() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  let rawdata = fs.readFileSync("./seed/questions.json");
+  let rawdata = fs.readFileSync("./seed/data/questions.json");
   let questions = JSON.parse(rawdata).questions;
   console.log(questions);
 

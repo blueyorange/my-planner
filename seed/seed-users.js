@@ -13,15 +13,17 @@ async function run() {
     useUnifiedTopology: true,
   });
 
+  await User.collection.drop();
+
   let permissions = JSON.parse(
-    fs.readFileSync("./seed/permissions.json")
+    fs.readFileSync("./seed/data/permissions.json")
   ).permissions;
   try {
     permissions = await Permission.insertMany(permissions);
   } catch (err) {}
   console.log(permissions);
 
-  let roles = JSON.parse(fs.readFileSync("./seed/roles.json")).roles;
+  let roles = JSON.parse(fs.readFileSync("./seed/data/roles.json")).roles;
   console.log(roles);
   for (let role of roles) {
     const permissionNames = role.permissions.map((p) => p.name);
@@ -37,27 +39,20 @@ async function run() {
     }
   }
 
-  let users = JSON.parse(fs.readFileSync("./seed/users.json")).users;
+  let users = JSON.parse(fs.readFileSync("./seed/data/users.json")).users;
   users.forEach(async (user) => {
-    userExists = await User.findOne({ id: user.id });
-    console.log("userexists", userExists);
-    if (!userExists) {
-      await User.create(user);
+    user.role = await Role.findOne({ name: user.role });
+    let userInDb = await User.findOne({ id: user.id });
+    if (!userInDb) {
+      userInDb = await User.create(user);
     }
+    console.log(userInDb);
   });
-  try {
-    await User.insertMany(users);
-  } catch (err) {
-    if (err.code == 11000) {
-      console.log(`Duplicate id key.`);
-    }
-  }
   let adminUser = await User.findOne({ id: "112970617713664374486" });
-  console.log(adminUser);
   console.log(`Assigning admin role to ${adminUser.name.givenName}`);
   adminRole = roles.find((role) => (role.name = "Admin"));
-  console.log(adminRole);
-  adminUser.assignRole("Admin");
+  await adminUser.assignRole("Admin");
+  console.log(await adminUser.can("edit-question"));
 }
 
 run();
