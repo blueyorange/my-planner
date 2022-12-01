@@ -13,16 +13,11 @@ const {
 var passport = require("passport");
 var session = require("express-session");
 const MongoStore = require("connect-mongo");
-
-const app = express();
-
-// Socket io
-const http = require("http");
-const server = http.createServer(app);
 const { Server } = require("socket.io");
+const http = require("http");
+const app = express();
+const server = http.createServer(app);
 const io = new Server(server);
-const connect = require("./socket/connect.js");
-io.on("connection", connect);
 
 // routes
 const home = require("./routes/home.js");
@@ -30,22 +25,45 @@ const auth = require("./routes/auth.js");
 const questions = require("./routes/questions.js");
 const poll = require("./routes/poll.js");
 
-// middleware
+// express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
-app.use(
-  session({
-    secret: process.env.SECRET,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    saveUninitialized: false,
-    resave: false,
-    // cookie: {secure: true} // for use with HTTPS
-  })
-);
+const sessionMiddleware = session({
+  secret: process.env.SECRET,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  saveUninitialized: false,
+  resave: false,
+  // cookie: {secure: true} // for use with HTTPS
+});
+app.use(sessionMiddleware);
 app.use(passport.authenticate("session"));
 app.use(flash());
+
+// Socket io
+// convert a connect middleware to a Socket.IO middleware
+const wrap = (middleware) => (socket, next) =>
+  middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+
+// only allow authenticated users
+io.use((socket, next) => {
+  const session = socket.request.session;
+  console.log("connecting...");
+  console.log(session);
+  if (session && session.isAuthenticated()) {
+    next();
+  } else {
+    next(new Error("unauthorized"));
+  }
+  next();
+});
+
+io.on("connection", (socket) => {
+  console.log(socket);
+});
 
 // SS rendering
 nunjucks.configure("views", {
