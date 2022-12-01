@@ -14,7 +14,13 @@ passport.use(
     },
     async function verify(source, profile, cb) {
       const { id, name, displayName } = profile;
-      const user = await User.findOne({ id, source }).exec();
+      const user = await User.findOne({ id, source })
+        .populate({
+          path: "role",
+          model: "Role",
+          populate: { path: "permissions", model: "Permission" },
+        })
+        .exec();
       if (!user) {
         return User.create({ source, id, name, displayName }).then(
           async (user) => {

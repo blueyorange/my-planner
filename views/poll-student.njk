@@ -30,6 +30,7 @@
             .href
             .split('/')
             .pop();
+        console.log('connecting...')
         const formData = new FormData(form);
         const userId = formData.get("userId");
         socket.emit('join', {room, userId, role: 'student'});

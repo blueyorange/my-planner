@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Poll = require("../models/poll.model.js");
 const { marked } = require("marked");
+const inflect = require("i");
 
 router.get("/teacher/:joinCode", async (req, res, next) => {
   const { joinCode } = req.params;

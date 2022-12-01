@@ -52,7 +52,7 @@ io.use(wrap(sessionMiddleware));
 io.use((socket, next) => {
   const session = socket.request.session;
   console.log("connecting...");
-  console.log(session);
+  console.log(session.passport.user.role.name);
   if (session && session.isAuthenticated()) {
     next();
   } else {
@@ -62,7 +62,7 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(socket);
+  console.log(socket.session.user.role);
 });
 
 // SS rendering
