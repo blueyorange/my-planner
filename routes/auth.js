@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 var passport = require("passport");
@@ -14,20 +15,19 @@ passport.use(
     },
     async function verify(source, profile, cb) {
       const { id, name, displayName } = profile;
-      const user = await User.findOne({ id, source })
-        .populate({
-          path: "role",
-          model: "Role",
-          populate: { path: "permissions", model: "Permission" },
-        })
-        .exec();
+      // All new users are students by default! *************
+      const role = "student";
+      const user = await User.findOne({ id, source }).exec();
       if (!user) {
-        return User.create({ source, id, name, displayName }).then(
-          async (user) => {
-            await user.assignRole("Student");
-            cb(null, user);
-          }
-        );
+        return User.create({
+          source,
+          id,
+          name,
+          displayName,
+          role,
+        }).then(async (user) => {
+          cb(null, user);
+        });
       } else {
         return cb(null, user);
       }
@@ -47,17 +47,25 @@ passport.deserializeUser(function (user, cb) {
   });
 });
 
-router.get("/login/federated/google", passport.authenticate("google"));
+router.get("/login/federated/google", (req, res, next) => {
+  console.log(req.session.targetUrl);
+  passport.authenticate("google")(req, res, next);
+});
 
-router.get(
-  "/oauth2/redirect/google",
+router.get("/oauth2/redirect/google", (req, res, next) => {
   passport.authenticate("google", {
-    successRedirect: "/questions",
-    failureRedirect: "/",
-  })
-);
+    successRedirect: req.session.targetUrl || "/",
+    failureRedirect: "/auth/login",
+    successFlash: { type: "success", message: "Log in successful!" },
+    failureFlash: { type: "error", message: "Log in failed." },
+  })(req, res, next);
+});
 
-router.get("/logout", function (req, res, next) {
+router.get("/login", (req, res) => {
+  return res.render("login.njk");
+});
+
+router.get("/logout", (req, res, next) => {
   req.logout(function (err) {
     if (err) {
       return next(err);

@@ -34,7 +34,7 @@ const sessionMiddleware = session({
   secret: process.env.SECRET,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   saveUninitialized: false,
-  resave: false,
+  resave: true,
   // cookie: {secure: true} // for use with HTTPS
 });
 app.use(sessionMiddleware);
@@ -56,7 +56,7 @@ io.use((socket, next) => {
   if (session && session.isAuthenticated()) {
     next();
   } else {
-    next(new Error("unauthorized"));
+    next(new Error("Unauthorised"));
   }
   next();
 });
@@ -89,8 +89,12 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use("/", home);
 app.use("/auth", auth);
 app.use(function (req, res, next) {
+  const { url } = req;
   if (!req.isAuthenticated()) {
-    return res.redirect("/");
+    req.session.targetUrl = url;
+    req.session.save();
+    console.log(`Not authenticated! ${req.session.targetUrl}`);
+    return res.redirect(`/auth/login`);
   }
   res.locals.user = req.user;
   res.locals.error = req.flash("error");

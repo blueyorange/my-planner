@@ -5,6 +5,4 @@ router.get("/", (req, res) => {
   return res.render("home.njk");
 });
 
-router.get("/:joinCode");
-
 module.exports = router;
