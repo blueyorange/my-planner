@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Poll = require("../models/poll.model.js");
 const { marked } = require("marked");
-const inflect = require("i");
 
 router.get("/teacher/:joinCode", async (req, res, next) => {
   const { joinCode } = req.params;
+  req.session.joinCode = joinCode;
   return Poll.findOne({ joinCode })
     .populate("question")
     .exec()
@@ -21,6 +21,7 @@ router.get("/teacher/:joinCode", async (req, res, next) => {
 
 router.get("/:joinCode", async (req, res, next) => {
   const { joinCode } = req.params;
+  req.session.joinCode = joinCode;
   return Poll.findOne({ joinCode })
     .populate("question")
     .then((poll) => {

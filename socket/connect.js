@@ -1,10 +1,18 @@
-// const Poll = require("./models/poll.model.js");
+const Poll = require("../models/poll.model.js");
 // const PollResult = require("./models/pollResult.model.js");
 // const Question = require("./models/question.model.js");
 const users = [];
 
-function connect(socket) {
-  console.log("User connected");
+async function connect(socket) {
+  const user = socket.request.session.passport.user;
+  const joinCode = socket.request.session.joinCode;
+  const poll = await Poll.findOne({ joinCode });
+  if (!poll) {
+    console.log();
+  }
+  if (user.role === "teacher" || user.role === "admin") {
+    console.log("teacher log in...");
+  }
   socket.on("join", (res) => {
     const { room } = res;
     res.socketId = socket.id;

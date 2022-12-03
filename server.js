@@ -8,7 +8,6 @@ require("dotenv").config();
 const {
   handleInvalidUrlErrors,
   handleCustomErrors,
-  handleServerErrors,
 } = require("./errors/errors");
 var passport = require("passport");
 var session = require("express-session");
@@ -18,6 +17,7 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const connect = require("./socket/connect.js");
 
 // routes
 const home = require("./routes/home.js");
@@ -34,7 +34,7 @@ const sessionMiddleware = session({
   secret: process.env.SECRET,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   saveUninitialized: false,
-  resave: true,
+  resave: false,
   // cookie: {secure: true} // for use with HTTPS
 });
 app.use(sessionMiddleware);
@@ -51,9 +51,7 @@ io.use(wrap(sessionMiddleware));
 // only allow authenticated users
 io.use((socket, next) => {
   const session = socket.request.session;
-  console.log("connecting...");
-  console.log(session.passport.user.role.name);
-  if (session && session.isAuthenticated()) {
+  if (session.passport.user) {
     next();
   } else {
     next(new Error("Unauthorised"));
@@ -61,9 +59,7 @@ io.use((socket, next) => {
   next();
 });
 
-io.on("connection", (socket) => {
-  console.log(socket.session.user.role);
-});
+io.on("connect", connect);
 
 // SS rendering
 nunjucks.configure("views", {

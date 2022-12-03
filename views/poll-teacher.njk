@@ -4,13 +4,14 @@
     {{ super() }} <link rel="stylesheet" href="/css/poll.css"/>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
-        console.log('blah');
-        const room = window
+        const socket = io();
+        console.log(socket);
+        const joinCode = window
             .location
             .href
             .split('/')
             .pop();
+        socket.emit('join', joinCode)
     </script>
 {% endblock %}
 {% block content %}

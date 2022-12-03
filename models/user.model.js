@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Role = require("./role.model.js");
 
 const UserSchema = new mongoose.Schema({
   source: { type: String, required: [true, "source not specified"] },

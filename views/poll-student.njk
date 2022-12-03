@@ -25,7 +25,7 @@
     <script defer>
         const socket = io();
         const form = document.querySelector('form');
-        const room = window
+        const joinCode = window
             .location
             .href
             .split('/')
@@ -33,7 +33,7 @@
         console.log('connecting...')
         const formData = new FormData(form);
         const userId = formData.get("userId");
-        socket.emit('join', {room, userId, role: 'student'});
+        socket.emit('join', joinCode);
         form.addEventListener('input', function (e) {
             const formData = new FormData(e.target.form);
             const answer = formData.get("answer");

@@ -122,27 +122,21 @@ router.get("/:id/delete", (req, res, next) => {
     });
 });
 
-router.get("/:id/poll", (req, res, next) => {
+router.get("/:id/poll", async (req, res, next) => {
   const { id } = req.params;
   const joinCode = Math.random().toString(32).slice(-4);
-  return Question.findById(id)
-    .then((q) => {
-      if (!q) {
-        return Promise.reject({
-          name: "Incorrrect Id",
-          message: "Question not found.",
-        });
-      } else {
-        return Poll.create({
-          joinCode,
-          question: id,
-          teacher: req.user._id,
-        }).then((poll) => {
-          return res.redirect(`/poll/teacher/${joinCode}`);
-        });
-      }
-    })
-    .catch((err) => next(err));
+  try {
+    const question = await Question.findById(id);
+    const poll = await Poll.create({
+      joinCode,
+      question,
+      teacher: req.user._id,
+    });
+    console.log(poll);
+  } catch (err) {
+    return next(err);
+  }
+  return res.redirect(`/poll/teacher/${joinCode}`);
 });
 
 module.exports = router;
