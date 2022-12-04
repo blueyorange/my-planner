@@ -1,30 +1,24 @@
 const Poll = require("../models/poll.model.js");
 // const PollResult = require("./models/pollResult.model.js");
 // const Question = require("./models/question.model.js");
-const users = [];
+const students = [];
 
 async function connect(socket) {
   const user = socket.request.session.passport.user;
   const joinCode = socket.request.session.joinCode;
-  const poll = await Poll.findOne({ joinCode });
-  if (!poll) {
-    console.log();
+  if (joinCode) {
+    // only teacher has the joinCode in session
+    socket.join(`${joinCode}:teacher`);
   }
-  if (user.role === "teacher" || user.role === "admin") {
-    console.log("teacher log in...");
-  }
-  socket.on("join", (res) => {
-    const { room } = res;
-    res.socketId = socket.id;
-    const alreadyJoined = users.find((user) => user.userId == res.userId);
-    if (!alreadyJoined) {
-      users.push(res);
-    } else {
-      socket.join(room);
-    }
-    studentsInRoom = users.filter((user) => user.room === res.room);
-    socket.to(room).emit("join", studentsInRoom);
+  socket.on("join", (joinCode) => {
+    socket.join(`${joinCode}:students`);
+    user.room = joinCode;
+    num = students.filter(student => student.room == joinCode)
+    console.log(`${num} student(s) in room ${joinCode}`)
+    io.to(`${joinCode}:teacher`).emit(students);
   });
 }
+
+
 
 module.exports = connect;
