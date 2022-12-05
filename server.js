@@ -50,14 +50,13 @@ io.use(wrap(sessionMiddleware));
 
 // only allow authenticated users
 io.use((socket, next) => {
-  const session = socket.request.session;
-  if (session.passport.user) {
+  try {
+    const user = socket.request.session.passport.user;
+    socket.user = user;
     next();
-  } else {
-    console.log("connection refused");
-    next(new Error("Unauthorised"));
+  } catch (e) {
+    next(new Error("unauthorized"));
   }
-  next();
 });
 
 io.on("connect", connect);
