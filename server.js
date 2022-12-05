@@ -54,6 +54,7 @@ io.use((socket, next) => {
   if (session.passport.user) {
     next();
   } else {
+    console.log("connection refused");
     next(new Error("Unauthorised"));
   }
   next();
@@ -86,7 +87,8 @@ app.use("/", home);
 app.use("/auth", auth);
 app.use(function (req, res, next) {
   const { url } = req;
-  if (!req.isAuthenticated()) {
+  const { user } = req.session.passport;
+  if (!user) {
     req.session.targetUrl = url;
     req.session.save();
     console.log(`Not authenticated! ${req.session.targetUrl}`);

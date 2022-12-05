@@ -5,12 +5,28 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        console.log(socket);
         const joinCode = window
             .location
             .href
             .split('/')
             .pop();
+        socket.emit('join', joinCode)
+        socket.on('students', (students) => {
+            console
+                .log (`${
+                    students.length
+                } in room`)
+                document
+                .querySelector('#join-status')
+                .innerHTML = `${
+                students.length
+            } in room`;
+            document.querySelector('#student-list').innerHTML = students.map(
+                student => `<span class="badge rounded-pill bg-primary">${
+                    student.name
+                }</span>`
+            ).reduce((acc, curr) => acc += curr, []);
+        });
     </script>
 {% endblock %}
 {% block content %}
@@ -31,5 +47,6 @@
                 </div>
             {% endfor %}
         </div>
+        <div id="student-list"></div>
     </div>
 </div>{% endblock %}
