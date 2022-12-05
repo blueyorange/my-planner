@@ -87,11 +87,9 @@ app.use("/", home);
 app.use("/auth", auth);
 app.use(function (req, res, next) {
   const { url } = req;
-  const { user } = req.session.passport;
-  if (!user) {
+  if (!req.isAuthenticated()) {
     req.session.targetUrl = url;
     req.session.save();
-    console.log(`Not authenticated! ${req.session.targetUrl}`);
     return res.redirect(`/auth/login`);
   }
   res.locals.user = req.user;
