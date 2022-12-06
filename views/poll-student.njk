@@ -34,19 +34,23 @@
         const formData = new FormData(form);
         const userId = formData.get("userId");
         socket.emit('join', joinCode);
-        form.addEventListener('input', function (e) {
-            const formData = new FormData(e.target.form);
-            const answer = formData.get("answer");
-            document.querySelector('#button-submit').removeAttribute('disabled');
-        })
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const answer = formData.get("answer");
-            const userId = formData.get("userId");
-            const questionId = formData.get("questionId");
-            const pollId = formData.get("pollId");
-            socket.emit("submit", {userId, pollId, questionId, answer});
-        });
+        socket
+            .on('names', (names) => console.log(names))
+            form
+            .addEventListener('input', function (e) {
+                const formData = new FormData(e.target.form);
+                const answer = formData.get("answer");
+                document.querySelector('#button-submit').removeAttribute('disabled');
+            })
+            form
+            .addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const answer = formData.get("answer");
+                const userId = formData.get("userId");
+                const questionId = formData.get("questionId");
+                const pollId = formData.get("pollId");
+                socket.emit("submit", {userId, pollId, questionId, answer});
+            });
     </script>
 {% endblock %}

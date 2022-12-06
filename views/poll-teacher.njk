@@ -11,19 +11,20 @@
             .split('/')
             .pop();
         socket.emit('join', joinCode)
-        socket.on('students', (students) => {
+        socket.on('names', (names) => {
+            console.log(names);
             console
                 .log (`${
-                    students.length
+                    names.length
                 } in room`)
                 document
                 .querySelector('#join-status')
                 .innerHTML = `${
-                students.length
+                names.length
             } in room`;
-            document.querySelector('#student-list').innerHTML = students.map(
-                student => `<span class="badge rounded-pill bg-primary">${
-                    student.name
+            document.querySelector('#student-list').innerHTML = names.map(
+                name => `<span class="badge rounded-pill bg-primary">${
+                    name
                 }</span>`
             ).reduce((acc, curr) => acc += curr, []);
         });

@@ -59,7 +59,7 @@ io.use((socket, next) => {
   }
 });
 
-io.on("connect", connect);
+io.on("connect", (socket) => connect(io, socket));
 
 // SS rendering
 nunjucks.configure("views", {
