@@ -25,6 +25,7 @@ function connect(io, socket) {
   usersById.set(user._id, user);
 
   socket.on("join", (joinCode, cb) => {
+    cb("done");
     roomName = joinCode;
     console.log(`${user.name.givenName} joined`);
     if (socket.rooms) socket.join(roomName);

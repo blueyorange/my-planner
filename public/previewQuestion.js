@@ -3,7 +3,7 @@ const questionFromForm = (form) => {
   return {
     body: formData.get("body"),
     correct: [formData.get("correct")],
-    options: formData.getAll("options")
+    options: formData.getAll("options"),
   };
 };
 

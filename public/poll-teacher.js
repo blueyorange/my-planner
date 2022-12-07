@@ -1,6 +1,8 @@
 const socket = io();
 const joinCode = window.location.href.split("/").pop();
-socket.emit("join", joinCode);
+socket.emit("join", joinCode, (err) => {
+  console.log(err);
+});
 socket.on("names", (names) => {
   console.log(names);
   console.log(`${names.length} in room`);
