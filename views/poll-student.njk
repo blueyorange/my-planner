@@ -11,9 +11,7 @@
                 {{ parse(q.body) | safe }}
             </div>
             <form class="options" action="" method="post">
-                <input type="hidden" name="userId" value="{{ userId }}"/>
                 <input type="hidden" name="questionId" value="{{ q._id }}"/>
-                <input type="hidden" name="pollId" value="{{ pollId }}"/>
                 {% for option in q.options %}
                     <input id="option-{{ loop.index }}" class="btn btn-light" type="radio" value="{{ option }}" name="answer" aria-label="radio"/>
                     <label for="option-{{ loop.index }}">{{ option }}</label>
@@ -33,13 +31,16 @@
         console.log('connecting...')
         const formData = new FormData(form);
         const userId = formData.get("userId");
-        socket.emit('join', joinCode);
+        socket.emit('join', joinCode, (err) => {
+            console.log(joinCode);
+            if (err) {
+                console.log(err)
+            }
+        });
         socket
             .on('names', (names) => console.log(names))
             form
             .addEventListener('input', function (e) {
-                const formData = new FormData(e.target.form);
-                const answer = formData.get("answer");
                 document.querySelector('#button-submit').removeAttribute('disabled');
             })
             form
@@ -47,10 +48,8 @@
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const answer = formData.get("answer");
-                const userId = formData.get("userId");
                 const questionId = formData.get("questionId");
-                const pollId = formData.get("pollId");
-                socket.emit("submit", {userId, pollId, questionId, answer});
+                socket.emit("submit", {questionId, answer});
             });
     </script>
 {% endblock %}
