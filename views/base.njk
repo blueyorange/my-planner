@@ -36,15 +36,13 @@
         crossorigin="anonymous"
         onload=""></script>
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-      {% if title=='questions' %}
-        <link rel="stylesheet" href="/css/questions.css">
-      {% endif %}
-      {% if title=='poll' %}
-        <link rel="stylesheet" href="/css/poll.css">
-      {% endif %}
-    {% endblock %}
-  </head>
-  <body>
-    {% block content %}{% endblock %}
-  </body>
-</html>
+    </head>
+  </html>
+  {% if title=='questions' %}
+    <link rel="stylesheet" href="/css/questions.css">
+  {% endif %}
+  {% if title=='poll' %}
+    <link rel="stylesheet" href="/css/poll.css">
+  {% endif %}
+{% endblock %}</head><body>
+{% block content %}{% endblock %}</body></html>
