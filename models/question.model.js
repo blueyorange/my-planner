@@ -4,7 +4,7 @@ const mongoosePaginate = require("mongoose-paginate");
 const QuestionSchema = new mongoose.Schema(
   {
     body: { type: String },
-    options: [{ type: String }],
+    choices: [{ type: String }],
     correct: [{ type: String }],
     tags: { type: [String], index: true },
     source: { type: String },
