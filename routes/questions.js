@@ -27,10 +27,10 @@ router.get("/", async (req, res) => {
     sort: { createdAt: -1 },
   }).catch((err) => next(err));
 
-  const numPagOptions = 5;
+  const numPagchoices = 5;
   const minAdvance = 3;
   const startPaginate = page > minAdvance ? page - minAdvance : 1;
-  let endPaginate = startPaginate + numPagOptions - 1;
+  let endPaginate = startPaginate + numPagchoices - 1;
   endPaginate = endPaginate > pages ? pages : endPaginate;
   questions = docs.map((doc) => {
     const question = {
@@ -57,7 +57,7 @@ router.get("/new", (req, res, next) => {
   return res.render("edit-question.njk", {
     action: "",
     parse: marked.parse,
-    q: { body: "", options: Array(4) },
+    q: { body: "", choices: Array(4) },
   });
 });
 

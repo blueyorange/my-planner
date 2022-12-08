@@ -16,8 +16,8 @@
         <div class="body">
             {{ parse(q.body) | safe }}
         </div>
-        <div class="options">
-            {% for option in q.options %}
+        <div class="choices">
+            {% for option in q.choices %}
                 <div class="option p-3 m-2">
                     {{ parse(option) | safe }}
                 </div>

@@ -10,9 +10,9 @@
             <div class="body">
                 {{ parse(q.body) | safe }}
             </div>
-            <form class="options" action="" method="post">
+            <form class="choices" action="" method="post">
                 <input type="hidden" name="questionId" value="{{ q._id }}"/>
-                {% for option in q.options %}
+                {% for option in q.choices %}
                     <input id="option-{{ loop.index }}" class="btn btn-light" type="radio" value="{{ option }}" name="answer" aria-label="radio"/>
                     <label for="option-{{ loop.index }}">{{ option }}</label>
                 {% endfor %}

@@ -28,8 +28,8 @@ router.get("/:joinCode", async (req, res, next) => {
       if (!poll) {
         return res.render("poll-reject.njk");
       } else {
-        const { body, options, _id } = poll.question;
-        const q = { _id, body, options };
+        const { body, choices, _id } = poll.question;
+        const q = { _id, body, choices };
         return res.render("poll-student.njk", {
           q,
           parse: marked.parse,

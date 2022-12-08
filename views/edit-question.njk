@@ -10,9 +10,9 @@
                     <div class="mb-3">
                         <textarea name="body" class="form-control" id="questionTextarea" rows="10" placeholder="Question markdown">{{ q.body }}</textarea>
                     </div>
-                    {% for option in q.options %}
+                    {% for option in q.choices %}
                         <div class="input-group mb-3">
-                            <input name="options" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
+                            <input name="choices" type="text" class="form-control" aria-label="Text input with checkbox" value="{{ option }}"/>
                             <div class="input-group-text" value="">
                                 {% if q.correct and q.correct.includes(option) %}
                                     <input class="form-check-input mt-0" type="radio" value="{{ option }}" name="correct" aria-label="Checkbox for following text input" checked/>
@@ -31,5 +31,5 @@
             </div>
         </div>
     </div>
-    <script src="/previewQuestion.js" type="module"></script>
+    <script src="/edit-question.js"></script>
 {% endblock %}
