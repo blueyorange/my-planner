@@ -1,4 +1,3 @@
-const { isObjectIdOrHexString } = require("mongoose");
 const Poll = require("../models/poll.model.js");
 const Response = require("../models/response.model.js");
 const Question = require("../models/question.model.js");
