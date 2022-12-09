@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "esbuild src/edit-question.js --bundle --minify  --outfile=./public/dist/edit-question.js",
     "start": "nodemon server.js",
+    "watch": "nodemon --exec 'npm run build && node server.js' --ignore public/dist",
     "seed": "node ./seed/seed.js",
     "seed-users": "node ./seed/seed-users.js"
   },
@@ -18,10 +20,12 @@
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
+    "esbuild": "0.16.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "i": "^0.3.7",
     "katex": "^0.16.2",
+    "lit": "^2.5.0",
     "marked": "^4.2.2",
     "mongoose": "^6.7.2",
     "mongoose-paginate": "^5.0.3",

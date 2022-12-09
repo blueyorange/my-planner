@@ -1,10 +1,11 @@
-import { html } from "https://cdn.skypack.dev/lit-html";
+import { html } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { marked } from "marked";
 
 export default function questionTemplateFunc(question, { disabled }) {
-  console.log(question);
   const { body, choices } = question;
   return html`
-    ${marked.parse(body)}'
+    ${unsafeHTML(marked.parse(body))}
     ${choices.map(
       (choice) => html`
         <input
@@ -15,8 +16,9 @@ export default function questionTemplateFunc(question, { disabled }) {
           ?disabled=${disabled}
         />
         <label class="form-check-label" for="flexRadioDefault1">
-          ${marked.parse(choice)}
+          ${unsafeHTML(marked.parse(choice))}
         </label>
       `
     )}
+  `;
 }

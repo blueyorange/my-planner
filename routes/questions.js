@@ -92,6 +92,7 @@ router.get("/:id/edit", (req, res, next) => {
   const { id } = req.params;
   return Question.findById(id)
     .then((q) => {
+      console.log(q);
       return res.render("edit-question.njk", {
         q,
         parse: marked.parse,
