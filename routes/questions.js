@@ -3,8 +3,6 @@ const router = express.Router();
 const Question = require("../models/question.model.js");
 const Poll = require("../models/poll.model.js");
 const { marked } = require("marked");
-const { default: mongoose } = require("mongoose");
-const { serializeUser } = require("passport");
 
 router.get("/", async (req, res) => {
   let { page = 1, limit = 18, tags } = req.query;
