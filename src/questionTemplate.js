@@ -1,36 +1,35 @@
 import { marked } from "marked";
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 
-function html(strings, ...values) {
-  let str = "";
-  strings.forEach((string, i) => {
-    str += string + values[i];
-  });
-  return str;
-}
-
-export default function questionTemplateFunc(question, { disabled }) {
+export default function pivotQuestion(question, { disabled }) {
   const { body, choices } = question;
   const bodyHTML = marked.parse(body);
   const choicesHTML = choices.map((c) => marked.parse(c));
+  const handleClick = (e) => e.target.form.querySelector('[type="submit"]').removeAttribute('disabled');
   return html`
     <div class="question">
-      ${bodyHTML}
+      ${unsafeHTML(bodyHTML)}
       <form>
         ${choicesHTML
-          .map(
-            (choice, i) => html`
+      .map(
+        (choice, i) => html`
+        <div class="form-check">
+        <input
+        class="form-check-input"
+          name="answer"
+          type="radio"
+          name="answer"
+          id="choice-${i}"
+          @click="${handleClick}"
+      />
               <label class="form-check-label" for="choice-${i}">
-                <input
-                  name="answer"
-                  type="radio"
-                  name="answer"
-                  id="choice-${i}"
-                />
-                ${choice}
+                ${unsafeHTML(choice)}
               </label>
-            `
-          )
-          .join("")}
+      </div>
+              `
+      )}
+      <input type="submit" class="btn btn-primary" disabled/>
       </form>
     </div>
   `;

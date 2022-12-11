@@ -6,25 +6,31 @@
   overflow: hidden;
   margin: 0 0px 20px 0;
 }
+
 .question-card:hover {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   cursor: pointer;
 }
+
 .question-card .question-body {
   height: auto;
   border-bottom: 1px lightgrey solid;
   margin-bottom: 5px;
 }
+
 .question-card .question-body img {
   max-width: 100%;
   height: auto;
 }
+
 .question-card .question-tags a {
   margin: 0 0 5px 5px;
 }
+
 .question-card .question-tags a:hover {
   color: lightgrey;
 }
+
 .question-card a {
   text-decoration: none;
   color: #212529;
@@ -37,14 +43,4 @@
 .question img {
   width: 100%;
   height: auto;
-}
-.question input[type="radio"] {
-  min-width: 5em;
-  appearance: none;
-  margin: 0;
-  border: 2px solid #444;
-}
-.question label {
-}
-.question label:hover {
 }

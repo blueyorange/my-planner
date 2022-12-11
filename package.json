@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "esbuild src/edit-question.js --bundle --minify  --outfile=./public/dist/edit-question.js",
-    "build-dev" : "esbuild src/edit-question.js --bundle --minify --sourcemap --outfile=./public/dist/edit-question.js",
+    "build-dev": "esbuild src/edit-question.js --bundle --minify --sourcemap --outfile=./public/dist/edit-question.js",
     "start": "nodemon server.js",
     "watch": "nodemon --exec 'npm run build-dev && node server.js' --ignore public/dist",
     "seed": "node ./seed/seed.js",

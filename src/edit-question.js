@@ -1,4 +1,5 @@
-import questionTemplateFunc from "./questionTemplate.js";
+import pivotQuestion from "./questionTemplate.js";
+import { render } from 'lit';
 
 const previewNode = document.querySelector("#question-preview");
 
@@ -6,10 +7,10 @@ function renderPreviewFromForm(form) {
   const formData = new FormData(form);
   const body = formData.get("body");
   const choices = formData.getAll("choices");
-  previewNode.innerHTML = questionTemplateFunc(
+  render(pivotQuestion(
     { body, choices },
     { disabled: true }
-  );
+  ), previewNode);
   renderMathInElement(previewNode, {
     delimiters: [
       {
