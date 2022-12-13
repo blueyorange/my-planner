@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const PollSchema = new mongoose.Schema({
   joinCode: { type: String },
-  question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
+  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  students: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  results: [{ type: mongoose.Schema.Types.ObjectId, ref: "PollResult" }],
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  responses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Response" }],
   expired: { type: Boolean },
 });
 
