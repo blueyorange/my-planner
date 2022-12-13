@@ -29,7 +29,7 @@ const poll = require("./routes/poll.js");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static("public"));
+app.use(express.static("dist"));
 const sessionMiddleware = session({
   secret: process.env.SECRET,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),

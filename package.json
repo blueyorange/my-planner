@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "esbuild src/edit-question.js --bundle --minify  --outfile=./public/dist/edit-question.js",
-    "build-dev": "esbuild src/edit-question.js --bundle --minify --sourcemap --outfile=./public/dist/edit-question.js",
+    "build": "esbuild src/edit-question.js --bundle --minify  --outdir=/dist/js/",
+    "build-dev": "esbuild src/edit-question.js --bundle --minify --sourcemap --outdir=dist/js",
     "start": "nodemon server.js",
-    "watch": "nodemon --exec 'npm run build-dev && node server.js' --ignore public/dist",
+    "watch": "nodemon --exec 'npm run build-dev && node server.js' --ignore dist/js",
     "seed": "node ./seed/seed.js",
     "seed-users": "node ./seed/seed-users.js"
   },
