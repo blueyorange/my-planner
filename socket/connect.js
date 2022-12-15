@@ -15,7 +15,6 @@ function createRoomState({ teacher }) {
 }
 
 function createStudentState({ user, questions }) {
-  const questions = [];
   const responses = [];
   return Object.freeze({ id: user._id, name: user.name.givenName, questions, responses, isConnected: true })
 }

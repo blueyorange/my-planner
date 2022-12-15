@@ -2,6 +2,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const User = require("../models/user.model");
+const Course = require('../models/course.model')
 
 async function run() {
   console.log("Accessing db...");
@@ -13,10 +14,11 @@ async function run() {
   await User.collection.drop();
 
   let users = JSON.parse(fs.readFileSync("./seed/data/users.json")).users;
-  User.insertMany(users).then((result) => {
-    console.log(result);
-    process.exit();
-  });
+  const result = await User.insertMany(users);
+  console.log(result);
+  const felix = await User.findOne({ id: '111392245021711687658' })
+  const course = await Course.create({ name: 'test', students: [felix._id] });
+  console.log(course);
 }
 
 run();

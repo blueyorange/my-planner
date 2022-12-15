@@ -9,6 +9,17 @@
         "familyName": "Johnson"
       },
       "role": "admin"
+    },
+    {
+      "source": "https://accounts.google.com",
+      "id": "111392245021711687658",
+      "displayName": "Felix Johnson",
+      "name": {
+        "givenName": "Felix",
+        "familyName": "Johnson"
+      },
+      "role": "student",
+      "__v": 0
     }
   ]
 }
